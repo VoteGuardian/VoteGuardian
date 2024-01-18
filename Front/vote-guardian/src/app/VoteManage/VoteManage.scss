@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'SUIT-Light';
+    src: url('../../assets/SUIT-Light.otf');
+}
+body {
+    font-family: 'SUIT-Light';
+}
+
+@media (min-width:700px) and (max-width:1920px) {
+    .flex-wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100em;
+        height: 50em;
+        border: 3px solid #4A83EF;
+        border-radius: 5px;
+        
+    
+        .wrap {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+@media screen and (max-width:700px) {
+    .flex-wrap {
+        background-color: blue;
+    }
+}
+
+// .flex-wrap {
+//     position: absolute;
+//     left: 50%;
+//     top: 50%;
+//     transform: translate(-50%, -50%);
+//     width: 100em;
+//     height: 50em;
+//     border: 3px solid #4A83EF;
+//     border-radius: 5px;
+    
+
+//     .wrap {
+//         width: 100%;
+//         height: 100%;
+//     }
+// }
