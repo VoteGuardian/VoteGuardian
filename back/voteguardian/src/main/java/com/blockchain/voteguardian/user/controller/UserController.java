@@ -3,7 +3,7 @@ package com.blockchain.voteguardian.user.controller;
 import com.blockchain.voteguardian.global.common.MessageResponse;
 import com.blockchain.voteguardian.global.properties.ResponseProperties;
 import com.blockchain.voteguardian.user.dto.UserRequest;
-import com.blockchain.voteguardian.user.service.UserServiceImpl;
+import com.blockchain.voteguardian.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final ResponseProperties responseProperties;
     @PostMapping("/join")
     public ResponseEntity<MessageResponse> joinUser(@RequestBody UserRequest.Create request){
