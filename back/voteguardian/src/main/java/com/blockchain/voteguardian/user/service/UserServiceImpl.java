@@ -7,6 +7,7 @@ import com.blockchain.voteguardian.user.entity.User;
 import com.blockchain.voteguardian.user.entity.UserBlackList;
 import com.blockchain.voteguardian.user.repository.UserBlackListRepository;
 import com.blockchain.voteguardian.user.repository.UserRepository;
+import com.blockchain.voteguardian.util.RedisUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final UserBlackListRepository userBlackListRepository;
     private final MailService mailService;
+    private final RedisUtil redisUtil;
 
     @Override
     public void join(UserRequest.Create request) {
@@ -46,5 +48,15 @@ public class UserServiceImpl implements UserService{
         // 이메일 전송하기
         mailService.sendMail(request.getEmail());
 
+    }
+
+    @Override
+    public void checkAuth(UserRequest.CheckAuthCode request) {
+        String code = redisUtil.getData(request.getEmail());
+        System.out.println(code);
+        System.out.println(request.getCode());
+        if(!code.equals(request.getCode())){
+            throw new UserApiException(UserErrorCode.CODES_DO_NOT_MATCH);
+        }
     }
 }

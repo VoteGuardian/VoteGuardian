@@ -32,5 +32,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
     }
 
+    @PostMapping("/email/check")
+    public ResponseEntity<MessageResponse> checkAuthCode(@RequestBody UserRequest.CheckAuthCode request){
+        userService.checkAuth(request);
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
+    }
+
 
 }
