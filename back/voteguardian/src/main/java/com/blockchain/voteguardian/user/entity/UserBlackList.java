@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "UserBlackList")
+@Table(name = "userblacklist")
 public class UserBlackList {
     @Id
     @Column(name = "user_id", nullable = false)

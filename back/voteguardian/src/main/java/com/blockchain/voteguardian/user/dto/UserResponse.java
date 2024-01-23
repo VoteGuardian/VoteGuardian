@@ -8,13 +8,14 @@ public class UserResponse {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class AuthResponse{
+    public static class login {
+        private String nickname;
+        private String email;
 
-        private String key;
-
-        public static UserResponse.AuthResponse build(String key){
-            return UserResponse.AuthResponse.builder()
-                    .key(key)
+        public static UserResponse.login build(String nickname, String email){
+            return login.builder()
+                    .nickname(nickname)
+                    .email(email)
                     .build();
         }
     }

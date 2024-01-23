@@ -30,4 +30,13 @@ public class UserRequest {
         private String email;
         private String code;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class login{
+        private String email;
+        private String password;
+    }
 }
