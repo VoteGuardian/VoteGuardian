@@ -3,6 +3,7 @@ package com.blockchain.voteguardian.user.service;
 import com.blockchain.voteguardian.global.error.exception.UserApiException;
 import com.blockchain.voteguardian.global.error.model.UserErrorCode;
 import com.blockchain.voteguardian.user.dto.UserRequest;
+import com.blockchain.voteguardian.user.dto.UserResponse;
 import com.blockchain.voteguardian.user.entity.User;
 import com.blockchain.voteguardian.user.entity.UserBlackList;
 import com.blockchain.voteguardian.user.repository.UserBlackListRepository;
@@ -58,5 +59,19 @@ public class UserServiceImpl implements UserService{
         if(!code.equals(request.getCode())){
             throw new UserApiException(UserErrorCode.CODES_DO_NOT_MATCH);
         }
+    }
+
+    @Override
+    public UserResponse.login login(UserRequest.login request) {
+        List<User> userList = userRepository.findByEmail(request.getEmail());
+        List<UserBlackList> userBlackLists = userBlackListRepository.findByUser_Email(request.getEmail());
+        if(userList.size() == userBlackLists.size()){
+            throw new UserApiException(UserErrorCode.USER_DOES_NOT_EXIST);
+        }
+        User user = userRepository.findTop1ByEmailOrderByUserIdDesc(request.getEmail());
+        if(!user.getPassword().equals(request.getPassword())){
+            throw new UserApiException(UserErrorCode.PASSWORDS_DO_NOT_MATCH);
+        }
+        return UserResponse.login.build(user.getNickname(), user.getEmail());
     }
 }
