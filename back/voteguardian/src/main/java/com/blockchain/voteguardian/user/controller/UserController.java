@@ -7,7 +7,6 @@ import com.blockchain.voteguardian.user.dto.UserRequest;
 import com.blockchain.voteguardian.user.dto.UserResponse;
 import com.blockchain.voteguardian.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
