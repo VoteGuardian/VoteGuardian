@@ -19,10 +19,24 @@ public class UserController {
 
     private final UserService userService;
     private final ResponseProperties responseProperties;
+
     @PostMapping("/join")
     public ResponseEntity<MessageResponse> joinUser(@RequestBody UserRequest.Create request){
         userService.join(request);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
     }
+
+    @PostMapping("/email")
+    public ResponseEntity<MessageResponse> sendMail(@RequestBody UserRequest.Eamil request){
+        userService.sendEmail(request);
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
+    }
+
+    @PostMapping("/email/check")
+    public ResponseEntity<MessageResponse> checkAuthCode(@RequestBody UserRequest.CheckAuthCode request){
+        userService.checkAuth(request);
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
+    }
+
 
 }

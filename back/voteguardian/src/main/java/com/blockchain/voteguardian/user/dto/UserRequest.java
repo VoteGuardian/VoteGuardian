@@ -13,4 +13,21 @@ public class UserRequest {
         private String nickname;
         private String password;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Eamil{
+        private String email;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class CheckAuthCode{
+        private String email;
+        private String code;
+    }
 }
