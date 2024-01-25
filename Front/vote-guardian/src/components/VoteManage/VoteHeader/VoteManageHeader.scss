@@ -1,0 +1,20 @@
+.vote-header-title {
+    width: 80%;
+    margin: auto;
+    height: 5vh;
+    p {
+        font-size: 1.6vmax;
+        margin: 0;
+        font-weight: bold;
+    }
+}
+.vote-type-list {
+    width: 100%;
+    ul {
+        display: flex;
+    }
+    li {
+        list-style-type: none;
+        display: inline;
+    }
+}
