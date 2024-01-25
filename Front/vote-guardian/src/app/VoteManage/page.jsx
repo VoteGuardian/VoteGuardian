@@ -1,20 +1,20 @@
-
+'use client'
 import './VoteManage.scss'
-import VoteList from '@/components/VoteManage/VoteContent/VoteList/VoteList'
+import { RecoilRoot } from 'recoil'
 import MenuBar from "@/components/Common/MenuBar/MenuBar"
-import VoteManageHeader from '@/components/VoteManage/VoteContent/VoteManageHeader'
-
+import VoteContent from '@/components/VoteManage/VoteContent/VoteContent'
 
 export default function VoteManage() {
     return(
-        <div className='flex-wrap'>
-            <div className='big-wrap'>
-                <MenuBar/>
-                <div className='vote-manage-content-wrap'>  
-                    <VoteManageHeader/>
-                    <VoteList/>
+        <RecoilRoot>
+            <div className='flex-wrap'>
+                <div className='big-wrap'>
+                    <MenuBar/>
+                    <div className='vote-manage-content-wrap'>  
+                        <VoteContent/>
+                    </div>
                 </div>
             </div>
-        </div>
+        </RecoilRoot>
     )
 }
