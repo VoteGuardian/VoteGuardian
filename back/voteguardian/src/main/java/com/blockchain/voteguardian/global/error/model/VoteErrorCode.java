@@ -12,7 +12,8 @@ public enum VoteErrorCode implements ErrorCode{
     VOTE_DOES_NOT_EXIST(2002, HttpStatus.NOT_ACCEPTABLE, "Vote does not exist"),
     VOTE_HAS_BEEN_ENDED(2003, HttpStatus.NOT_ACCEPTABLE, "Vote has been ended"),
     VOTE_HAS_BEEN_DELETED(2004,HttpStatus.NOT_ACCEPTABLE, "Vote has been deleted"),
-    ALREADY_PARTICIPATED_IN_THE_VOTE(2005, HttpStatus.NOT_ACCEPTABLE, "Already participated in the vote");
+    ALREADY_PARTICIPATED_IN_THE_VOTE(2005, HttpStatus.NOT_ACCEPTABLE, "Already participated in the vote"),
+    FAILED_TO_REGISTER_PHOTO(2006, HttpStatus.NOT_ACCEPTABLE, "Failed to register photo");
 
     private final int code;
     private final HttpStatus httpStatus;

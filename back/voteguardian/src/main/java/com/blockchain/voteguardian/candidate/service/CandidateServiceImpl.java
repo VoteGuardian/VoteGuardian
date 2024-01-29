@@ -6,6 +6,7 @@ import com.blockchain.voteguardian.candidate.repository.CandidateRepository;
 import com.blockchain.voteguardian.global.error.exception.VoteApiException;
 import com.blockchain.voteguardian.global.error.model.VoteErrorCode;
 import com.blockchain.voteguardian.vote.entity.Vote;
+import com.blockchain.voteguardian.vote.service.AwsS3Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,7 @@ import java.util.List;
 public class CandidateServiceImpl implements CandidateService{
 
     private final CandidateRepository candidateRepository;
+    private final AwsS3Service awsS3Service;
     @Override
     public void create(List<CandidateRequest.Create> candidateList, List<MultipartFile> photos, Vote vote) throws JsonProcessingException {
         int photo_idx = 0;
@@ -32,8 +34,7 @@ public class CandidateServiceImpl implements CandidateService{
                 }
                 MultipartFile photo = photos.get(photo_idx);
                 // s3 버킷에 사진 등록
-
-                picture="url 주소";
+                picture = awsS3Service.uploadFile(photo);
                 photo_idx++;
             }
             String tags = new ObjectMapper().writeValueAsString(req.getTagList());
