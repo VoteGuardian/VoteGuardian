@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
@@ -34,6 +33,15 @@ public class VoteController {
             throw new VoteApiException(VoteErrorCode.VOTE_DOES_NOT_HAVE_EXACTLY_VALUES);
         }
         VoteResponse.CreateVote response = voteService.create(request, photos);
+        if(response == null){
+            ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getFail(),null));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getSuccess(),response));
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity<DtoResponse<VoteResponse.MainVoteList>> mainVoteList(int state, int page, String email){
+        VoteResponse.MainVoteList response = voteService.mainVoteList(state, page, email);
         if(response == null){
             ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getFail(),null));
         }
