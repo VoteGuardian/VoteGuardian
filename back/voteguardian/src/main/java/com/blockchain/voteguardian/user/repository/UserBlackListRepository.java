@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface UserBlackListRepository extends JpaRepository<UserBlackList, Long> {
     List<UserBlackList> findByUser_Email(String email);
+    UserBlackList findTop1ByUser_EmailOrderByUser_UserIdDesc(String email);
 }

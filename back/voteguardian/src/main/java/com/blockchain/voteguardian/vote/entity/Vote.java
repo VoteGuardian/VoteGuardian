@@ -1,6 +1,5 @@
 package com.blockchain.voteguardian.vote.entity;
 
-
 import com.blockchain.voteguardian.user.entity.User;
 import com.blockchain.voteguardian.vote.dto.VoteRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,6 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "vote")
+@ToString
 public class Vote {
 
     @Id
