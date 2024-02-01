@@ -1,0 +1,11 @@
+.pagenation-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .prev-button-wrap, .next-button-wrap {
+        p {
+            margin: 0;
+            display: inline;
+        }
+    }
+}

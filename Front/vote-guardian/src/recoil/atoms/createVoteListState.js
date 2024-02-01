@@ -5,3 +5,8 @@ export const createVoteListState = atom({
     key : 'createVoteListState',
     default: []
 })
+
+export const pageNumState = atom({
+    key: 'pageNumState',
+    default: 1
+})
