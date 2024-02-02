@@ -1,11 +1,49 @@
 .pagenation-wrap {
     width: 100%;
+    height: 2em;
     display: flex;
     justify-content: center;
-    .prev-button-wrap, .next-button-wrap {
-        p {
-            margin: 0;
-            display: inline;
+    p {
+        margin: 0;
+    }
+    .page-button-list {
+        display: flex;
+        .page-button-wrap {
+            width: 2em;
+            //현재 페이지 버튼
+            &.clicked {
+                background-color: #4A83EF;
+                border-radius: 3px;
+                color: white;
+            }
+            //선택되지 않은 페이지 버튼(마우스 올렸을 때)
+            &.none:hover {
+                transition: background, 1s;
+                background: rgba( #4A83EF, 0.2);
+                border-radius: 3px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+            }
+            p {
+                line-height: 2em;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+            }
         }
+    }
+    //이전과 다음 버튼
+    .next-button-wrap, .prev-button-wrap {
+        width: 2em;
+        &:hover {
+            transition: background, 1s;
+            background: rgba( #4A83EF, 0.2);
+            border-radius: 3px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+        display: flex;
+        justify-content: center;
+        align-items : center;
     }
 }
