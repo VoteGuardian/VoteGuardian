@@ -34,4 +34,20 @@ public class VoteResponse {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ParticipateVoteList {
+        private int totalPageCnt;
+        private List<ParticipateVote> voteList;
+
+        public static VoteResponse.ParticipateVoteList build(int totalPageCnt, List<ParticipateVote> voteList){
+            return ParticipateVoteList.builder()
+                    .totalPageCnt(totalPageCnt)
+                    .voteList(voteList)
+                    .build();
+        }
+    }
 }

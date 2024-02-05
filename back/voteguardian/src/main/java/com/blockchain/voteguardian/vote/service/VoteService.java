@@ -10,4 +10,6 @@ public interface VoteService {
     VoteResponse.CreateVote create(VoteRequest.Create request, List<MultipartFile> photos) throws JsonProcessingException;
 
     VoteResponse.MainVoteList mainVoteList(int state, int page, String email);
+
+    VoteResponse.ParticipateVoteList participateVoteList(int state, int page, String email);
 }
