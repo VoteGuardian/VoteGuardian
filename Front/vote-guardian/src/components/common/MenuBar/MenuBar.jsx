@@ -1,7 +1,8 @@
 'use client'
 import './MenuBar.scss';
 import PcDropDown from "./PcDropDown";
-import { Mobile, PC } from '@/hooks/useResize';
+import MobileDropDown from './MobileDropDown';
+import { Mobile, PC, Tablet } from '@/hooks/useResize';
 
 export default function MenuBar() {
     return(
@@ -14,9 +15,16 @@ export default function MenuBar() {
                     </div>
                 </div>
             </PC>
+            <Tablet>
+                <div className='mobile-bar-wrap'>
+                    <p className='mobile-title'>투표 가디언</p>
+                    <MobileDropDown/>
+                </div>
+            </Tablet>
             <Mobile>
                 <div className='mobile-bar-wrap'>
                     <p className='mobile-title'>투표 가디언</p>
+                    <MobileDropDown/>
                 </div>
             </Mobile>
         </>

@@ -1,28 +1,39 @@
 @font-face {
-    font-family: 'SUIT-Light';
-    src: url('../../assets/SUIT-Light.otf');
+    font-family: 'SUIT-Bold';
+    src: url('../../assets/SUIT-Bold.otf');
 }
 body {
-    font-family: 'SUIT-Light';
+    font-family: 'SUIT-Bold';
+    margin: 0;
 }
 
 //box를 가운데로 위치시키기 위한 div
 .flex-wrap {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    //box의 크기와 선
-    .big-wrap {
-        width: 90vw;
-        height: 90vh;
-        border: 3px solid #4A83EF;
-        border-radius: 5px;
+    .pc-wrap {
         display: flex;
+        .vote-manage-flex {
+            width: 90vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 94vh;
+            margin: auto;
+        }
     }
-    .vote-manage-content-wrap {
-        display: flex;
-        flex-wrap: wrap;
-        margin: auto;
+    .tablet-wrap {
+        .vote-manage-flex {
+            height: 94vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .mobile-wrap {
+        .vote-manage-flex {
+            height: 94vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
     }
 }

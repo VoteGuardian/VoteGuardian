@@ -1,10 +1,11 @@
-import VoteManageHeader from "../VoteHeader/VoteManageHeader"
-import VoteList from "./VoteList/VoteList"
+import VoteManageHeader from "./VoteHeader/VoteManageHeader"
+import VoteList from "./VoteContent/VoteList/VoteList"
 import { useSetRecoilState } from 'recoil';
 import { createVoteListState } from "@/recoil/atoms/createVoteListState";
 import { useEffect } from "react";
 
-export default function VoteContent() {
+
+export default function VoteManage() {
     const setVoteManageList = useSetRecoilState(createVoteListState);
     
     useEffect(() => {

@@ -1,20 +1,77 @@
-.vote-header-title {
-    width: 80%;
-    margin: auto;
-    height: 5vh;
-    p {
-        font-size: 1.6vmax;
-        margin: 0;
-        font-weight: bold;
+.pc-vote-header-wrap, .tablet-vote-header-wrap, .mobile-vote-header-wrap {
+    .vote-header-title {
+        width: 100%;
+        margin: auto;
+        height: 5vh;
+        p {
+            margin: auto;
+            font-weight: bold;
+        }
+    }
+    .vote-state-list-wrap {
+        width: 100%;
+        ul {
+            display: flex;
+            margin: auto;
+            margin-top: 1vmax;
+            padding: 0;
+            li {
+                list-style-type: none;
+                display: inline;
+                margin-right: 1em;
+                &.selected {
+                    color: #4A83EF;
+                }
+            }
+        }
     }
 }
-.vote-type-list {
-    width: 100%;
-    ul {
-        display: flex;
+
+.pc-vote-header-wrap {
+    .vote-header-title {
+        p {
+            font-size: 1.8vw;
+            width: 84%
+        }
     }
-    li {
-        list-style-type: none;
-        display: inline;
+    .vote-state-list-wrap {
+        ul {
+            li  {
+                font-size: 1.1vmax;
+            }
+            width: 84%;
+        }
+    }
+}
+.tablet-vote-header-wrap {
+    .vote-header-title {
+        p {
+            font-size: 2vw;
+            width: 70%
+        }
+    }
+    .vote-state-list-wrap {
+        ul {
+            li {
+                font-size: 1.4vmax;
+            }
+            width: 70%;
+        }
+    }
+}
+.mobile-vote-header-wrap {
+    .vote-header-title {
+        p {
+            font-size: 2.4vw;
+            width: 85%
+        }
+    }
+    .vote-state-list-wrap {
+        ul {
+            li {
+                font-size: 1.6vmax;
+            }
+            width: 85%;
+        }
     }
 }

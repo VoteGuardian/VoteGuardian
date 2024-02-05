@@ -9,7 +9,7 @@ export default function VoteOne() {
     return(
         <>
         {voteManageList.map((vote) =>
-            <div className='vote-info'>
+            <div key={vote.id} className='vote-info'>
                 <div className='vote-one-top'>
                     {/* 1 : 예정, 2 : 진행 , 3: 종료 */}
                     {vote.state == 1 ? 
