@@ -2,6 +2,7 @@ package com.blockchain.voteguardian.vote.service;
 
 import com.blockchain.voteguardian.candidate.service.CandidateService;
 import com.blockchain.voteguardian.global.error.exception.VoteApiException;
+import com.blockchain.voteguardian.global.error.model.UserErrorCode;
 import com.blockchain.voteguardian.global.error.model.VoteErrorCode;
 import com.blockchain.voteguardian.global.properties.ConstProperties;
 import com.blockchain.voteguardian.user.entity.User;
@@ -13,6 +14,8 @@ import com.blockchain.voteguardian.vote.dto.VoteResponse;
 import com.blockchain.voteguardian.vote.entity.Vote;
 import com.blockchain.voteguardian.vote.repository.VoteRepository;
 import com.blockchain.voteguardian.vote.repository.VoteRepositoryImpl;
+import com.blockchain.voteguardian.votehistory.entity.VoteHistory;
+import com.blockchain.voteguardian.votehistory.repository.VoteHistoryRepository;
 import com.blockchain.voteguardian.voter.repository.VoterRepositoryImpl;
 import com.blockchain.voteguardian.voter.service.VoterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +41,7 @@ public class VoteServiceImpl implements VoteService{
     private final ConstProperties constProperties;
     private final VoteRepositoryImpl voteRepositoryImpl;
     private final VoterRepositoryImpl voterRepositoryImpl;
+    private final VoteHistoryRepository voteHistoryRepository;
 
     @Override
     public VoteResponse.CreateVote create(VoteRequest.Create request, List<MultipartFile> photos) throws JsonProcessingException {
@@ -121,6 +125,10 @@ public class VoteServiceImpl implements VoteService{
         if(page < 0 || state < 1 || state > 3){
             throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
         }
+        User user = userRepository.findTop1ByEmailOrderByUserIdDesc(email);
+        if(user == null){
+            throw new VoteApiException(UserErrorCode.USER_DOES_NOT_EXIST);
+        }
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Pageable pageable = PageRequest.of(page, constProperties.getSize());
         List<Vote> list;
@@ -158,20 +166,25 @@ public class VoteServiceImpl implements VoteService{
         if(list == null){
             participateVoteList = null;
         }else{
-            participateVoteList = changeParticipateVote(list);
+            participateVoteList = changeParticipateVote(list, user);
         }
 
         return VoteResponse.ParticipateVoteList.build(totalPageCnt, participateVoteList);
     }
 
-    private List<ParticipateVote> changeParticipateVote(List<Vote> list) {
+    private List<ParticipateVote> changeParticipateVote(List<Vote> list, User user) {
         List<ParticipateVote> res = new ArrayList<>();
         for(Vote v : list){
-            /*
-             투표 참여 관련 기능 구현(투표 참여 C, 암호화 등)이 필요하므로
-             현재 투표 참여 여부는 다 false 로 설정
+            /**
+             * 암호화 작업 추가로 필요합니다.
              */
-            ParticipateVote pv = ParticipateVote.Create(v, false);
+            String encryptUserId = user.getUserId().toString();
+            boolean participate = false;
+            VoteHistory voteHistory = voteHistoryRepository.findByEncryptUserIdAndVote_VoteId(encryptUserId, v.getVoteId());
+            if(voteHistory != null){
+                participate = true;
+            }
+            ParticipateVote pv = ParticipateVote.Create(v, participate);
             res.add(pv);
         }
         return res;
