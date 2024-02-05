@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface VoterRepository extends JpaRepository<Voter, Long> {
 
+    Voter findByVote_VoteIdAndEmail(Long voteId, String email);
+
     public interface VoterRepositoryCustom {
 
         List<Vote> PreList(String email, Pageable pageable, Timestamp now);
