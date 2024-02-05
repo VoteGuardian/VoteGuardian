@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 public class VoteHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id", nullable = false)
-    private Long userId;
+    @Column(name="votehistory_id", nullable = false)
+    private Long voteHistoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id", nullable = false)
