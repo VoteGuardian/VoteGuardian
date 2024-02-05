@@ -47,4 +47,13 @@ public class VoteController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getSuccess(),response));
     }
+
+    @GetMapping("/link")
+    public ResponseEntity<DtoResponse<VoteResponse.ParticipateVoteList>> participateVoteList(int state, int page, String email){
+        VoteResponse.ParticipateVoteList response = voteService.participateVoteList(state, page, email);
+        if(response == null){
+            ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getFail(),null));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getSuccess(),response));
+    }
 }

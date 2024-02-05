@@ -7,11 +7,13 @@ import com.blockchain.voteguardian.global.properties.ConstProperties;
 import com.blockchain.voteguardian.user.entity.User;
 import com.blockchain.voteguardian.user.repository.UserRepository;
 import com.blockchain.voteguardian.vote.dto.MainVote;
+import com.blockchain.voteguardian.vote.dto.ParticipateVote;
 import com.blockchain.voteguardian.vote.dto.VoteRequest;
 import com.blockchain.voteguardian.vote.dto.VoteResponse;
 import com.blockchain.voteguardian.vote.entity.Vote;
 import com.blockchain.voteguardian.vote.repository.VoteRepository;
 import com.blockchain.voteguardian.vote.repository.VoteRepositoryImpl;
+import com.blockchain.voteguardian.voter.repository.VoterRepositoryImpl;
 import com.blockchain.voteguardian.voter.service.VoterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
@@ -35,6 +37,8 @@ public class VoteServiceImpl implements VoteService{
     private final VoteRepository voteRepository;
     private final ConstProperties constProperties;
     private final VoteRepositoryImpl voteRepositoryImpl;
+    private final VoterRepositoryImpl voterRepositoryImpl;
+
     @Override
     public VoteResponse.CreateVote create(VoteRequest.Create request, List<MultipartFile> photos) throws JsonProcessingException {
         User user = userRepository.findTop1ByEmailOrderByUserIdDesc(request.getEmail());
@@ -52,7 +56,7 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public VoteResponse.MainVoteList mainVoteList(int state, int page, String email) {
-        if(page < 0){
+        if(page < 0 || state < 0 || state > 3){
             throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
         }
         User user = userRepository.findTop1ByEmailOrderByUserIdDesc(email);
@@ -64,40 +68,119 @@ public class VoteServiceImpl implements VoteService{
         if(state == 0){ // 전체 투표 조회
             totalCnt = voteRepositoryImpl.mainTotalVoteCnt(user);
             totalPageCnt = changePageCnt(totalCnt);
-            if(totalPageCnt <= page){
-                throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voteRepositoryImpl.mainTotalList(user, pageable);
             }
-            list = voteRepositoryImpl.mainTotalList(user, pageable);
         }else if(state == 1){ // 예정 투표 조회
             totalCnt = voteRepositoryImpl.mainPreVoteCnt(user, now);
             totalPageCnt = changePageCnt(totalCnt);
-            if(totalPageCnt <= page){
-                throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voteRepositoryImpl.mainPreList(user, pageable, now);
             }
-            list = voteRepositoryImpl.mainPreList(user, pageable, now);
         }else if(state == 2){ // 진행중인 투표 조회
             totalCnt = voteRepositoryImpl.mainProgressVoteCnt(user, now);
             totalPageCnt = changePageCnt(totalCnt);
-            if(totalPageCnt <= page){
-                throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voteRepositoryImpl.mainProgressList(user, pageable, now);
             }
-            list = voteRepositoryImpl.mainProgressList(user, pageable, now);
         }else{ // 종료된 투표 조회
             totalCnt = voteRepositoryImpl.mainEndVoteCnt(user, now);
             totalPageCnt = changePageCnt(totalCnt);
-            if(totalPageCnt <= page){
-                throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voteRepositoryImpl.mainEndList(user, pageable, now);
             }
-            list = voteRepositoryImpl.mainEndList(user, pageable, now);
         }
         List<MainVote> mainVoteList;
-        if(state == 0){
-            mainVoteList = checkStateAndMakeVote(list);
+        if(list == null){
+            mainVoteList = null;
         }else{
-            mainVoteList = changeMainVote(list, state);
+            if(state == 0){
+                mainVoteList = checkStateAndMakeVote(list);
+            }else{
+                mainVoteList = changeMainVote(list, state);
+            }
         }
 
         return VoteResponse.MainVoteList.build(totalPageCnt, mainVoteList);
+    }
+
+    @Override
+    public VoteResponse.ParticipateVoteList participateVoteList(int state, int page, String email) {
+        if(page < 0 || state < 1 || state > 3){
+            throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
+        }
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Pageable pageable = PageRequest.of(page, constProperties.getSize());
+        List<Vote> list;
+        int totalCnt;
+        int totalPageCnt;
+        if(state == 1){ // 예정 투표
+            totalCnt = voterRepositoryImpl.PreVoteCnt(email, now);
+            totalPageCnt = changePageCnt(totalCnt);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voterRepositoryImpl.PreList(email, pageable, now);
+            }
+        }else if(state == 2) { // 진행 중 투표
+            totalCnt = voterRepositoryImpl.ProgressVoteCnt(email, now);
+            totalPageCnt = changePageCnt(totalCnt);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voterRepositoryImpl.ProgressList(email, pageable, now);
+            }
+        }else{ // 종료 된 투표
+            totalCnt = voterRepositoryImpl.EndVoteCnt(email, now);
+            totalPageCnt = changePageCnt(totalCnt);
+            if(page == 0 && totalCnt == 0){
+                list = null;
+            }else{
+                pageError(totalPageCnt <= page);
+                list = voterRepositoryImpl.EndList(email, pageable, now);
+            }
+        }
+        List<ParticipateVote> participateVoteList;
+        if(list == null){
+            participateVoteList = null;
+        }else{
+            participateVoteList = changeParticipateVote(list);
+        }
+
+        return VoteResponse.ParticipateVoteList.build(totalPageCnt, participateVoteList);
+    }
+
+    private List<ParticipateVote> changeParticipateVote(List<Vote> list) {
+        List<ParticipateVote> res = new ArrayList<>();
+        for(Vote v : list){
+            /*
+             투표 참여 관련 기능 구현(투표 참여 C, 암호화 등)이 필요하므로
+             현재 투표 참여 여부는 다 false 로 설정
+             */
+            ParticipateVote pv = ParticipateVote.Create(v, false);
+            res.add(pv);
+        }
+        return res;
+    }
+
+    private static void pageError(boolean totalPageCnt) {
+        if (totalPageCnt) {
+            throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
+        }
     }
 
     private int changePageCnt(int totalCnt) {
