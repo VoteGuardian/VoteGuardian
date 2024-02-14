@@ -68,4 +68,13 @@ public class VoteController {
         voteHistoryService.participateVote(request);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
     }
+
+    @GetMapping("/link/detail")
+    public ResponseEntity<DtoResponse<VoteResponse.LinkVoteDetail>> linkVoteDetail(long vote) {
+        VoteResponse.LinkVoteDetail response = voteService.linkVoteDetail(vote);
+        if(response == null){
+            ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getFail(),null));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getSuccess(),response));
+    }
 }
