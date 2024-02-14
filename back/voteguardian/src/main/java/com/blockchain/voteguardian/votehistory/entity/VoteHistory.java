@@ -29,17 +29,17 @@ public class VoteHistory {
     private long votedId;
 
     @NotNull
-    private String encryptUserId;
+    private String encryptEmail;
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" )
     private Timestamp voteDay;
 
-    public static VoteHistory voteHistoryCreate(Vote vote, long votedId, Timestamp now, String encryptUserId){
+    public static VoteHistory voteHistoryCreate(Vote vote, long votedId, Timestamp now, String encryptEmail){
         return VoteHistory.builder()
                 .vote(vote)
                 .votedId(votedId)
-                .encryptUserId(encryptUserId)
+                .encryptEmail(encryptEmail)
                 .voteDay(now)
                 .build();
     }
