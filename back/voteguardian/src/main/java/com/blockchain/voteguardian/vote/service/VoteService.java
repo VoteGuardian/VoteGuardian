@@ -12,4 +12,6 @@ public interface VoteService {
     VoteResponse.MainVoteList mainVoteList(int state, int page, String email);
 
     VoteResponse.ParticipateVoteList participateVoteList(int state, int page, String email) throws Exception;
+
+    VoteResponse.LinkVoteDetail linkVoteDetail(long voteId);
 }

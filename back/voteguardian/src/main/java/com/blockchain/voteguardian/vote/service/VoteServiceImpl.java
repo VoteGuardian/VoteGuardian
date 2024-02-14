@@ -1,5 +1,9 @@
 package com.blockchain.voteguardian.vote.service;
 
+import com.blockchain.voteguardian.candidate.dto.CandidateResponse;
+import com.blockchain.voteguardian.candidate.dto.Tag;
+import com.blockchain.voteguardian.candidate.entity.Candidate;
+import com.blockchain.voteguardian.candidate.repository.CandidateRepository;
 import com.blockchain.voteguardian.candidate.service.CandidateService;
 import com.blockchain.voteguardian.global.error.exception.VoteApiException;
 import com.blockchain.voteguardian.global.error.model.UserErrorCode;
@@ -14,6 +18,7 @@ import com.blockchain.voteguardian.vote.dto.ParticipateVote;
 import com.blockchain.voteguardian.vote.dto.VoteRequest;
 import com.blockchain.voteguardian.vote.dto.VoteResponse;
 import com.blockchain.voteguardian.vote.entity.Vote;
+import com.blockchain.voteguardian.vote.repository.VoteBlackListRepository;
 import com.blockchain.voteguardian.vote.repository.VoteRepository;
 import com.blockchain.voteguardian.vote.repository.VoteRepositoryImpl;
 import com.blockchain.voteguardian.votehistory.entity.VoteHistory;
@@ -21,6 +26,8 @@ import com.blockchain.voteguardian.votehistory.repository.VoteHistoryRepository;
 import com.blockchain.voteguardian.voter.repository.VoterRepositoryImpl;
 import com.blockchain.voteguardian.voter.service.VoterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +35,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +54,8 @@ public class VoteServiceImpl implements VoteService{
     private final VoterRepositoryImpl voterRepositoryImpl;
     private final VoteHistoryRepository voteHistoryRepository;
     private final EncrptProperties encrptProperties;
+    private final VoteBlackListRepository voteBlackListRepository;
+    private final CandidateRepository candidateRepository;
 
     @Override
     public VoteResponse.CreateVote create(VoteRequest.Create request, List<MultipartFile> photos) throws JsonProcessingException {
@@ -174,6 +184,35 @@ public class VoteServiceImpl implements VoteService{
         }
 
         return VoteResponse.ParticipateVoteList.build(totalPageCnt, participateVoteList);
+    }
+
+    @Override
+    public VoteResponse.LinkVoteDetail linkVoteDetail(long voteId) {
+        if(!voteRepository.existsById(voteId)){
+            throw new VoteApiException(VoteErrorCode.VOTE_DOES_NOT_EXIST);
+        }
+        if(voteBlackListRepository.existsById(voteId)){
+            throw new VoteApiException(VoteErrorCode.VOTE_HAS_BEEN_DELETED);
+        }
+        Vote vote = voteRepository.findById(voteId).get();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        if(vote.getFinishAt().equals(now) || vote.getFinishAt().before(now)){
+            throw new VoteApiException(VoteErrorCode.VOTE_HAS_BEEN_ENDED);
+        }
+        List<Candidate> candidates = candidateRepository.findAllByVote_VoteId(voteId);
+        List<CandidateResponse.Detail> candidateList = new ArrayList<>();
+        for(Candidate c : candidates){
+            ArrayList<Tag> tagList = null;
+            if(c.getTag() != null){
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<Tag>>() {}.getType();
+                tagList = gson.fromJson(c.getTag(), type);
+            }
+            CandidateResponse.Detail d = CandidateResponse.Detail.build(c, tagList);
+            candidateList.add(d);
+        }
+
+        return VoteResponse.LinkVoteDetail.build(vote, candidateList);
     }
 
     private List<ParticipateVote> changeParticipateVote(List<Vote> list, User user) throws Exception {
