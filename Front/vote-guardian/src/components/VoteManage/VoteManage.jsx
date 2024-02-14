@@ -1,37 +1,32 @@
 import VoteManageHeader from "./VoteHeader/VoteManageHeader"
 import VoteList from "./VoteContent/VoteList/VoteList"
-import { useSetRecoilState } from 'recoil';
-import { createVoteListState } from "@/recoil/atoms/createVoteListState";
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { createVoteListState, votePage, voteState, voteTotalPage } from "@/recoil/atoms/createVoteListState";
 import { useEffect } from "react";
-
+import { getCreateVoteList } from "@/app/api/vote/vote";
 
 export default function VoteManage() {
+    //생성한 투표 목록
     const setVoteManageList = useSetRecoilState(createVoteListState);
-    
+    //생성한 투표 목록이 가지는 전체 페이지 수
+    const setVoteTotalPage = useSetRecoilState(voteTotalPage);
+    //투표 상태와 현재 페이지 번호
+    const state = useRecoilValue(voteState);
+    const page = useRecoilValue(votePage);
+    //이메일은 아직 더미
+    const email = 'ko123@g.com';
+
+    //회원이 생성한 투표 목록을 불러오기
+    //투표 상태(전체, 예정, 진행, 종료)와 페이지가 바뀔 경우 다시 불러오기
     useEffect(() => {
-        getCreateVoteList();
-    }, [])
-    //예정, 진행, 종료
-    function getCreateVoteList() {
-        setVoteManageList([
-            {
-                id: 1, title:"OO대학교 학생회장 선거", startAt: '2023-04-15 11:00:00',
-                finishAt: '2023-04-31 23:59:59', createdAt: '2023-04-01 10:23:42', state: 1
-            },
-            {
-                id: 2, title:"OO대학교 XX학과 MT 날짜 투표", startAt: '2023-04-15 11:00:00',
-                finishAt: '2023-04-31 23:59:59', createdAt: '2023-04-01 10:23:42', state: 2
-            },
-            {
-                id: 3, title:"굉장히 긴 제목이 하나 필요한데 뭐라고 적을까", startAt: '2023-03-12 09:00:00',
-                finishAt: '2023-03-12 11:59:59', createdAt: '2023-03-12 08:23:13', state: 3
-            },
-            {
-                id: 4, title:"굉장히 긴 제목이 하나 필요한데 뭐라고 적을까", startAt: '2023-03-12 09:00:00',
-                finishAt: '2023-03-12 11:59:59', createdAt: '2023-03-12 08:23:13', state: 3
-            }
-        ])
-    }
+        async function fetchVoteData() {
+            const voteInfo = await getCreateVoteList(state, page-1, email);
+            setVoteManageList(voteInfo.voteList);
+            setVoteTotalPage(voteInfo.totalPageCnt);
+        }
+        
+        fetchVoteData();
+    }, [state, page])
     return(
         <>
             <VoteManageHeader/>

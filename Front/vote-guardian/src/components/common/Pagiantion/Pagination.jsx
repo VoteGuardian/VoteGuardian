@@ -2,17 +2,16 @@
 import { GrCaretPrevious } from "react-icons/gr";
 import { GrCaretNext } from "react-icons/gr";
 import './Pagination.scss';
-import { useRecoilState } from "recoil";
-import { pageNumState } from "@/recoil/atoms/createVoteListState";
-import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { votePage, voteTotalPage } from "@/recoil/atoms/createVoteListState";
+import { useEffect } from "react";
 
 export default function Pagination() {
     //현재 페이지 번호
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useRecoilState(votePage);
     //페이지를 몇 개 단위로 묶을지에 대한 수
     const limitPageCount = 5; 
-    //api 요청으로 받을 전체 페이지 수(현재는 더미데이터)
-    const totalPageCount = 8;   
+    const totalPageCount = useRecoilValue(voteTotalPage);   
 
     //페이지를 5개(limitPageCount)씩 묶은 그룹 배열 생성하기
     const createPageGroupList = (totalPageCount, currentPage) => {
@@ -37,7 +36,7 @@ export default function Pagination() {
     
     //현재 페이지가 속한 그룹(페이지가 바뀌면 같이 바뀜)
     let currentGroup = getCurrentPageGroup(currentPage, limitPageCount);
-
+    
     //페이지가 바뀔 때마다 실행
     useEffect(() => {
         //초기 페이지 버튼색 설정
@@ -55,8 +54,9 @@ export default function Pagination() {
             buttonListChild[currentButton].classList.remove("none");
         } else {
             currentButton = (currentPage%5)-1;
-            buttonListChild[currentButton].classList.add("clicked");
-            buttonListChild[currentButton].classList.remove("none");
+            console.log(pageGroup);
+            //buttonListChild[currentButton].classList.add("clicked");
+            //buttonListChild[currentButton].classList.remove("none");
         }
         //현재 페이지를 제외한 번호들에서 clicked 제거(css 효과 제거를 위함)
         for(let i = 0; i < lastButtonNumber; i++) {
@@ -65,7 +65,7 @@ export default function Pagination() {
                 buttonListChild[i].classList.add("none");
             }
         }
-    }, [currentPage]);
+    }, []);
     
     //이전 버튼 클릭 시(페이지 그룹 이동)
     function handlePreviousPage() {

@@ -1,6 +1,6 @@
 .pc-vote-list, .tablet-vote-list, .mobile-vote-list {
     .vote-info {
-        height: 32vh;
+        height: 34vh;
         border: 3px solid #4A83EF;
         margin: 1em;
 
@@ -45,7 +45,6 @@
                     // font-size: 25px;
                     font-weight: bold;
                     //글자 가운데 배치
-                    width: 11em;
                     text-align: left;
                     margin: auto;
                     line-height: 6vh;
@@ -61,28 +60,28 @@
                 width: 80%;
                 height: 7vh;
                 margin: 0.5vh auto;
+                padding-top: 1vh;
                 .vote-period-top, .vote-period-bottom {
                     padding: 0.5vh 0;
                     .vote-period-title {
-                        width: 10vh;
                         p {
                             font-weight: bold;
                         }
                     }
                 }
                 //생성날짜랑 아이콘
-                .vote-created-left {
-                    display: flex;
-                    font-weight: bold;
-                    width: 10vh;
-                    justify-content: space-between;
-                }
+                //.vote-created-left {
+                //    display: flex;
+                //    font-weight: bold;
+                //    width: 10vh;
+                //    justify-content: space-between;
+                //}
             }
-            .vote-period-top, .vote-created-date {
-                display: flex;
+            .vote-period-top {
+                //display: flex;
                 justify-content: space-between;
                 align-items: center;
-                .vote-period-title, .vote-created-left {
+                .vote-period-title {
                     display: flex;
                     justify-content: space-between;
                 }
@@ -108,26 +107,40 @@
         width: 20vw;
     }
     .vote-title {
-        p {    
+        p { 
+            width: 11em;   
             font-size: 1.6vw;
+        }
+    }
+    .vote-period-date {
+        .vote-period-title {
+            display: flex;
+            align-items: center;
+            width: 31%;
+            p {
+                font-size: 1vw;
+            }
         }
     }
 }
 .tablet-vote-list {
     .vote-info {
-        width: 23vw;
+        width: 25vw;
+        //width: 23em;
     }
     .vote-title {
-        p {    
-            font-size: 1.8vw;
+        p { 
+            width: 20vw;   
+            //font-size: 1.8vw;
+            font-size: 1.7em;
         }
     }
 }
 
 .mobile-vote-list {
     .vote-info {
-        // width: 32vw;
-        width: 23em;
+        width: 32vw;
+        //width: 23em;
         height: 33vh;
     }
     .vote-title {
@@ -135,7 +148,9 @@
             margin-top: 1vh;
         }
         p {    
-            font-size: 1.6em;
+            //font-size: 1.6em;
+            width: 80%;
+            font-size: 2.5vw;
         }
     }
 }
