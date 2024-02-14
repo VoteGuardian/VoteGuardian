@@ -1,6 +1,11 @@
 package com.blockchain.voteguardian.vote.dto;
 
+import com.blockchain.voteguardian.candidate.dto.CandidateResponse;
+import com.blockchain.voteguardian.vote.entity.Vote;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+
+import java.sql.Timestamp;
 import java.util.List;
 
 public class VoteResponse {
@@ -47,6 +52,32 @@ public class VoteResponse {
             return ParticipateVoteList.builder()
                     .totalPageCnt(totalPageCnt)
                     .voteList(voteList)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class LinkVoteDetail {
+        private String title;
+        private String content;
+        private boolean type;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "Asia/Seoul")
+        private Timestamp startAt;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "Asia/Seoul")
+        private Timestamp finishAt;
+        private List<CandidateResponse.Detail> candidateList;
+
+        public static VoteResponse.LinkVoteDetail build(Vote vote, List<CandidateResponse.Detail> candidateList){
+            return LinkVoteDetail.builder()
+                    .title(vote.getTitle())
+                    .content(vote.getContent())
+                    .type(vote.isType())
+                    .startAt(vote.getStartAt())
+                    .finishAt(vote.getFinishAt())
+                    .candidateList(candidateList)
                     .build();
         }
     }
