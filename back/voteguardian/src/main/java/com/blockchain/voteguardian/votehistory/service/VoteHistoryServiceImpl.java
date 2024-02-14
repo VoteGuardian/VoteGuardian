@@ -5,8 +5,10 @@ import com.blockchain.voteguardian.candidate.repository.CandidateRepository;
 import com.blockchain.voteguardian.global.error.exception.VoteApiException;
 import com.blockchain.voteguardian.global.error.model.UserErrorCode;
 import com.blockchain.voteguardian.global.error.model.VoteErrorCode;
+import com.blockchain.voteguardian.global.properties.EncrptProperties;
 import com.blockchain.voteguardian.user.entity.User;
 import com.blockchain.voteguardian.user.repository.UserRepository;
+import com.blockchain.voteguardian.util.AesUtil;
 import com.blockchain.voteguardian.vote.entity.Vote;
 import com.blockchain.voteguardian.vote.repository.VoteRepository;
 import com.blockchain.voteguardian.votehistory.dto.VoteHistoryRequest;
@@ -31,9 +33,10 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
     private final VoteHistoryRepository voteHistoryRepository;
     private final CandidateRepository candidateRepository;
     private final VoterRepository voterRepository;
+    private final EncrptProperties encrptProperties;
 
     @Override
-    public void participateVote(VoteHistoryRequest.Create request) {
+    public void participateVote(VoteHistoryRequest.Create request) throws Exception {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Optional<Vote> vote = voteRepository.findById(request.getVoteId());
         User user = userRepository.findTop1ByEmailOrderByUserIdDesc(request.getEmail());
@@ -56,13 +59,11 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
             throw new VoteApiException(VoteErrorCode.DOES_NOT_HAVE_EXACTLY_VALUES);
         }
 
-        /**
-         * 암호화 작업 추가로 필요합니다.
-         */
-        String encryptUserId = user.getUserId().toString();
+        AesUtil aesUtil = new AesUtil(encrptProperties.getKey());
+        String encryptEmail = aesUtil.AesCBCEncode(request.getEmail());
 
         // 이미 투표에 참여한 기록이 존재할 때
-        VoteHistory  already = voteHistoryRepository.findByEncryptUserIdAndVote_VoteId(encryptUserId, vote.get().getVoteId());
+        VoteHistory  already = voteHistoryRepository.findByEncryptEmailAndVote_VoteId(encryptEmail, vote.get().getVoteId());
         if(already != null){
             throw new VoteApiException(VoteErrorCode.ALREADY_PARTICIPATED_IN_THE_VOTE);
         }
@@ -73,7 +74,7 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
             if(request.getCandidateId() > 1 || request.getCandidateId() < -1){
                 throw new VoteApiException(VoteErrorCode.DOES_NOT_HAVE_EXACTLY_VALUES);
             }
-            voteHistory = VoteHistory.voteHistoryCreate(vote.get(), request.getCandidateId(), now, encryptUserId);
+            voteHistory = VoteHistory.voteHistoryCreate(vote.get(), request.getCandidateId(), now, encryptEmail);
         }else{ // 선거 투표일 때
             if(request.getCandidateId() != -1){
                 Candidate candidate = candidateRepository.findByCandidateIdAndVote_VoteId(request.getCandidateId(), vote.get().getVoteId());
@@ -81,7 +82,7 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
                     throw new VoteApiException(VoteErrorCode.CANDIDATE_DOES_NOT_EXIST);
                 }
             }
-            voteHistory = VoteHistory.voteHistoryCreate(vote.get(), request.getCandidateId(), now, encryptUserId);
+            voteHistory = VoteHistory.voteHistoryCreate(vote.get(), request.getCandidateId(), now, encryptEmail);
 
         }
 

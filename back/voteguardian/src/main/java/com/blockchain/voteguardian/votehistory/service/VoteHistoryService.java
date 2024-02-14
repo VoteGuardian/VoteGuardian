@@ -4,5 +4,5 @@ import com.blockchain.voteguardian.votehistory.dto.VoteHistoryRequest;
 
 public interface VoteHistoryService {
 
-    void participateVote(VoteHistoryRequest.Create request);
+    void participateVote(VoteHistoryRequest.Create request) throws Exception;
 }

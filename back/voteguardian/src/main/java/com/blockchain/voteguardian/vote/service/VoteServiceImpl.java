@@ -5,8 +5,10 @@ import com.blockchain.voteguardian.global.error.exception.VoteApiException;
 import com.blockchain.voteguardian.global.error.model.UserErrorCode;
 import com.blockchain.voteguardian.global.error.model.VoteErrorCode;
 import com.blockchain.voteguardian.global.properties.ConstProperties;
+import com.blockchain.voteguardian.global.properties.EncrptProperties;
 import com.blockchain.voteguardian.user.entity.User;
 import com.blockchain.voteguardian.user.repository.UserRepository;
+import com.blockchain.voteguardian.util.AesUtil;
 import com.blockchain.voteguardian.vote.dto.MainVote;
 import com.blockchain.voteguardian.vote.dto.ParticipateVote;
 import com.blockchain.voteguardian.vote.dto.VoteRequest;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class VoteServiceImpl implements VoteService{
     private final VoteRepositoryImpl voteRepositoryImpl;
     private final VoterRepositoryImpl voterRepositoryImpl;
     private final VoteHistoryRepository voteHistoryRepository;
+    private final EncrptProperties encrptProperties;
 
     @Override
     public VoteResponse.CreateVote create(VoteRequest.Create request, List<MultipartFile> photos) throws JsonProcessingException {
@@ -121,7 +125,7 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public VoteResponse.ParticipateVoteList participateVoteList(int state, int page, String email) {
+    public VoteResponse.ParticipateVoteList participateVoteList(int state, int page, String email) throws Exception {
         if(page < 0 || state < 1 || state > 3){
             throw new VoteApiException(VoteErrorCode.PAGE_DOES_NOT_EXIST);
         }
@@ -172,15 +176,14 @@ public class VoteServiceImpl implements VoteService{
         return VoteResponse.ParticipateVoteList.build(totalPageCnt, participateVoteList);
     }
 
-    private List<ParticipateVote> changeParticipateVote(List<Vote> list, User user) {
+    private List<ParticipateVote> changeParticipateVote(List<Vote> list, User user) throws Exception {
         List<ParticipateVote> res = new ArrayList<>();
+        AesUtil aesUtil = new AesUtil(encrptProperties.getKey());
+        String encryptEmail = aesUtil.AesCBCEncode(user.getEmail());
+        System.out.println("encryptEmail : "+encryptEmail);
         for(Vote v : list){
-            /**
-             * 암호화 작업 추가로 필요합니다.
-             */
-            String encryptUserId = user.getUserId().toString();
             boolean participate = false;
-            VoteHistory voteHistory = voteHistoryRepository.findByEncryptUserIdAndVote_VoteId(encryptUserId, v.getVoteId());
+            VoteHistory voteHistory = voteHistoryRepository.findByEncryptEmailAndVote_VoteId(encryptEmail, v.getVoteId());
             if(voteHistory != null){
                 participate = true;
             }

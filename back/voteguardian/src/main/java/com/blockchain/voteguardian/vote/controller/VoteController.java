@@ -52,7 +52,7 @@ public class VoteController {
     }
 
     @GetMapping("/link")
-    public ResponseEntity<DtoResponse<VoteResponse.ParticipateVoteList>> participateVoteList(int state, int page, String email){
+    public ResponseEntity<DtoResponse<VoteResponse.ParticipateVoteList>> participateVoteList(int state, int page, String email) throws Exception {
         VoteResponse.ParticipateVoteList response = voteService.participateVoteList(state, page, email);
         if(response == null){
             ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getFail(),null));
@@ -61,7 +61,7 @@ public class VoteController {
     }
 
     @PostMapping("/link")
-    public ResponseEntity<MessageResponse> participateVote(@RequestBody VoteHistoryRequest.Create request, BindingResult bindingResult){
+    public ResponseEntity<MessageResponse> participateVote(@RequestBody VoteHistoryRequest.Create request, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             throw new VoteApiException(VoteErrorCode.DOES_NOT_HAVE_EXACTLY_VALUES);
         }
