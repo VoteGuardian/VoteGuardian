@@ -23,7 +23,7 @@ public class UserController {
     private final ResponseProperties responseProperties;
 
     @PostMapping("/join")
-    public ResponseEntity<MessageResponse> joinUser(@RequestBody UserRequest.Create request){
+    public ResponseEntity<MessageResponse> joinUser(@RequestBody UserRequest.Create request)throws Exception{
         userService.join(request);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, responseProperties.getSuccess()));
     }

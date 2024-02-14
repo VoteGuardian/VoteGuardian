@@ -1,5 +1,6 @@
 package com.blockchain.voteguardian.user.service;
 
+import com.blockchain.voteguardian.ethereum.sevice.EthereumService;
 import com.blockchain.voteguardian.global.error.exception.UserApiException;
 import com.blockchain.voteguardian.global.error.model.UserErrorCode;
 import com.blockchain.voteguardian.user.dto.UserRequest;
@@ -25,13 +26,14 @@ public class UserServiceImpl implements UserService{
     private final UserBlackListRepository userBlackListRepository;
     private final MailService mailService;
     private final RedisUtil redisUtil;
+    private final EthereumService ethereumService;
 
     @Override
-    public void join(UserRequest.Create request) {
+    public void join(UserRequest.Create request) throws Exception {
         // 회원가입 시간
         Timestamp now = new Timestamp(System.currentTimeMillis());
-        //블록체인 지값 생성
-        String wallet = "123";
+        //블록체인 지갑 생성
+        String wallet = ethereumService.createWallet();
         User user = User.UserCreate(request, now, wallet);
         userRepository.save(user);
     }
