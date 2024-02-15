@@ -228,6 +228,12 @@ public class VoteServiceImpl implements VoteService{
         }
         Vote vote = voteRepository.findById(voteId).get();
 
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        // 아직 투표가 종료되지 않았을 때
+        if(vote.getFinishAt().after(now)){
+            throw new VoteApiException(VoteErrorCode.VOTE_HAS_NOT_ENDED);
+        }
+
         // 투표의 투표자 목록에 해당 이메일이 존재하지 않을 때
         Voter voter = voterRepository.findByVote_VoteIdAndEmail(vote.getVoteId(), email);
         if(voter == null){

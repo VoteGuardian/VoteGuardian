@@ -17,7 +17,8 @@ public enum VoteErrorCode implements ErrorCode{
     PAGE_DOES_NOT_EXIST(2007, HttpStatus.NOT_ACCEPTABLE, "Page does not exist"),
     DOES_NOT_HAVE_EXACTLY_VALUES(2008, HttpStatus.NOT_ACCEPTABLE, "Does not have exactly values"),
     VOTE_HAS_NOT_STARTED(2009, HttpStatus.NOT_ACCEPTABLE, "Vote has not started"),
-    CANDIDATE_DOES_NOT_EXIST(2010, HttpStatus.NOT_ACCEPTABLE, "Candidate does not exist");
+    CANDIDATE_DOES_NOT_EXIST(2010, HttpStatus.NOT_ACCEPTABLE, "Candidate does not exist"),
+    VOTE_HAS_NOT_ENDED(2011, HttpStatus.NOT_ACCEPTABLE, "Vote has not ended");
 
     private final int code;
     private final HttpStatus httpStatus;
