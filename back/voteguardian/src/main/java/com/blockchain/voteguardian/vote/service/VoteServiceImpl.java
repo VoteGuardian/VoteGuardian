@@ -23,6 +23,8 @@ import com.blockchain.voteguardian.vote.repository.VoteRepository;
 import com.blockchain.voteguardian.vote.repository.VoteRepositoryImpl;
 import com.blockchain.voteguardian.votehistory.entity.VoteHistory;
 import com.blockchain.voteguardian.votehistory.repository.VoteHistoryRepository;
+import com.blockchain.voteguardian.voter.entity.Voter;
+import com.blockchain.voteguardian.voter.repository.VoterRepository;
 import com.blockchain.voteguardian.voter.repository.VoterRepositoryImpl;
 import com.blockchain.voteguardian.voter.service.VoterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,6 +58,7 @@ public class VoteServiceImpl implements VoteService{
     private final EncrptProperties encrptProperties;
     private final VoteBlackListRepository voteBlackListRepository;
     private final CandidateRepository candidateRepository;
+    private final VoterRepository voterRepository;
 
     @Override
     public VoteResponse.CreateVote create(VoteRequest.Create request, List<MultipartFile> photos) throws JsonProcessingException {
@@ -213,6 +216,51 @@ public class VoteServiceImpl implements VoteService{
         }
 
         return VoteResponse.LinkVoteDetail.build(vote, candidateList);
+    }
+
+    @Override
+    public VoteResponse.Result voteResult(long voteId, String email) {
+        if(!voteRepository.existsById(voteId)){
+            throw new VoteApiException(VoteErrorCode.VOTE_DOES_NOT_EXIST);
+        }
+        if(voteBlackListRepository.existsById(voteId)){
+            throw new VoteApiException(VoteErrorCode.VOTE_HAS_BEEN_DELETED);
+        }
+        Vote vote = voteRepository.findById(voteId).get();
+
+        // 투표의 투표자 목록에 해당 이메일이 존재하지 않을 때
+        Voter voter = voterRepository.findByVote_VoteIdAndEmail(vote.getVoteId(), email);
+        if(voter == null){
+            throw new VoteApiException(VoteErrorCode.DOES_NOT_HAVE_EXACTLY_VALUES);
+        }
+        int totalVoterCount = voterRepository.findByVote_VoteId(vote.getVoteId()).size();
+
+        List<Candidate> candidates = candidateRepository.findAllByVote_VoteId(voteId);
+        List<CandidateResponse.Result> candidateList = new ArrayList<>();
+        int attend_sum = 0;
+        double percent_sum = 0;
+        for(Candidate c : candidates){
+            int count = voteHistoryRepository.findByVote_VoteIdAndVotedId(vote.getVoteId(), c.getCandidateId()).size();
+            attend_sum += count;
+            double percent = Math.round((((float)count/totalVoterCount)*100)*100.0)/100.0;
+            percent_sum += percent;
+            candidateList.add(CandidateResponse.Result.build(c.getNum(),c.getName(), count, percent));
+        }
+        // 기권표 존재
+        int abstain_count = voteHistoryRepository.findByVote_VoteIdAndVotedId(vote.getVoteId(), (long) -1).size();
+        if(abstain_count != 0){
+            attend_sum += abstain_count;
+            double percent = Math.round((((float)abstain_count/totalVoterCount)*100)*100.0)/100.0;
+            percent_sum += percent;
+            candidateList.add(CandidateResponse.Result.build(-1,"기권", abstain_count, percent));
+        }
+        // 무응답자 존재
+        if(totalVoterCount != attend_sum){
+            candidateList.add(CandidateResponse.Result.build(-1,"무응답", totalVoterCount-attend_sum, 100.0-percent_sum));
+        }
+
+
+        return VoteResponse.Result.build(vote, candidateList);
     }
 
     private List<ParticipateVote> changeParticipateVote(List<Vote> list, User user) throws Exception {

@@ -11,6 +11,8 @@ public interface VoterRepository extends JpaRepository<Voter, Long> {
 
     Voter findByVote_VoteIdAndEmail(Long voteId, String email);
 
+    List<Voter> findByVote_VoteId(Long voteId);
+
     public interface VoterRepositoryCustom {
 
         List<Vote> PreList(String email, Pageable pageable, Timestamp now);

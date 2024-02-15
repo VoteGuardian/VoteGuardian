@@ -81,4 +81,30 @@ public class VoteResponse {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Result {
+        private String title;
+        private String content;
+        private boolean type;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "Asia/Seoul")
+        private Timestamp startAt;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "Asia/Seoul")
+        private Timestamp finishAt;
+        private List<CandidateResponse.Result> candidateList;
+
+        public static VoteResponse.Result build(Vote vote, List<CandidateResponse.Result> candidateList){
+            return Result.builder()
+                    .title(vote.getTitle())
+                    .content(vote.getContent())
+                    .type(vote.isType())
+                    .startAt(vote.getStartAt())
+                    .finishAt(vote.getFinishAt())
+                    .candidateList(candidateList)
+                    .build();
+        }
+    }
 }
