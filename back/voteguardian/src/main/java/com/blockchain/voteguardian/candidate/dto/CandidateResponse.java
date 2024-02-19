@@ -29,4 +29,24 @@ public class CandidateResponse {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Result {
+        private int num;
+        private String name;
+        private int count;
+        private double percent;
+
+        public static CandidateResponse.Result build(int num, String name, int count, double percent){
+            return Result.builder()
+                    .num(num)
+                    .name(name)
+                    .count(count)
+                    .percent(percent)
+                    .build();
+        }
+    }
 }
