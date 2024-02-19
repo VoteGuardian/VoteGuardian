@@ -1,0 +1,156 @@
+.pc-vote-list, .tablet-vote-list, .mobile-vote-list {
+    .vote-info {
+        height: 34vh;
+        border: 3px solid #4A83EF;
+        margin: 1em;
+
+        //예정, 진행, 종료
+        .vote-one-top {
+            position: relative;
+            height: 25%;
+            .vote-type {
+                width: 3.5em;
+                height: 2.5em;
+                border-radius: 15%;
+                position: absolute;
+                bottom: 0;
+                left: 2em;
+                //어떤 상태냐에 따라 색 설정
+                &.before {
+                    background-color: rgba( #A7B1E9, 0.5 );
+                }
+                &.progress {
+                    background-color: rgba( #25C196, 0.5 );
+                }
+                &.done {
+                    background-color: rgba( #FF917E, 0.5 );
+                }
+                //글씨
+                p {
+                    margin: 0;
+                    font-weight: bold;
+                    line-height: 2.5em;
+                    text-align: center;
+                }
+            }
+        }
+        //제목, 투표기간, 생성날짜
+        .vote-content {
+            height: 75%;
+            //제목
+            .vote-title {
+                width: 100%;
+                height: 6vh;
+                p {
+                    // font-size: 25px;
+                    font-weight: bold;
+                    //글자 가운데 배치
+                    text-align: left;
+                    margin: auto;
+                    line-height: 6vh;
+                    // 말줄임 효과(제목이 너무 길 때)
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    word-break: break-all;
+                }
+            }
+            //투표 기간과 시작 날짜
+            .vote-period-date, .vote-created-date {
+                width: 80%;
+                height: 7vh;
+                margin: 0.5vh auto;
+                padding-top: 1vh;
+                .vote-period-top, .vote-period-bottom {
+                    padding: 0.5vh 0;
+                    .vote-period-title {
+                        p {
+                            font-weight: bold;
+                        }
+                    }
+                }
+                //생성날짜랑 아이콘
+                //.vote-created-left {
+                //    display: flex;
+                //    font-weight: bold;
+                //    width: 10vh;
+                //    justify-content: space-between;
+                //}
+            }
+            .vote-period-top {
+                //display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .vote-period-title {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                p {
+                    margin: 0;
+                }
+            }
+            //종료 날짜
+            .vote-period-bottom {
+                display: flex;
+                justify-content: flex-end;
+                p {
+                    margin-right: 1em;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+.pc-vote-list {
+    .vote-info {
+        width: 20vw;
+    }
+    .vote-title {
+        p { 
+            width: 11em;   
+            font-size: 1.6vw;
+        }
+    }
+    .vote-period-date {
+        .vote-period-title {
+            display: flex;
+            align-items: center;
+            width: 31%;
+            p {
+                font-size: 1vw;
+            }
+        }
+    }
+}
+.tablet-vote-list {
+    .vote-info {
+        width: 25vw;
+        //width: 23em;
+    }
+    .vote-title {
+        p { 
+            width: 20vw;   
+            //font-size: 1.8vw;
+            font-size: 1.7em;
+        }
+    }
+}
+
+.mobile-vote-list {
+    .vote-info {
+        width: 32vw;
+        //width: 23em;
+        height: 33vh;
+    }
+    .vote-title {
+        .vote-period-date {
+            margin-top: 1vh;
+        }
+        p {    
+            //font-size: 1.6em;
+            width: 80%;
+            font-size: 2.5vw;
+        }
+    }
+}

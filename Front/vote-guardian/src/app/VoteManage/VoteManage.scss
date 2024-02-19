@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'SUIT-Bold';
+    src: url('../../assets/SUIT-Bold.otf');
+}
+body {
+    font-family: 'SUIT-Bold';
+    margin: 0;
+}
+
+//box를 가운데로 위치시키기 위한 div
+.flex-wrap {
+    .pc-wrap {
+        display: flex;
+        .vote-manage-flex {
+            width: 90vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 94vh;
+            margin: auto;
+        }
+    }
+    .tablet-wrap {
+        .vote-manage-flex {
+            height: 94vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .mobile-wrap {
+        .vote-manage-flex {
+            height: 94vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

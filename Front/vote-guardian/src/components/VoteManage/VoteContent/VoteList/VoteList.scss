@@ -1,0 +1,39 @@
+.pc-vote-list, .tablet-vote-list, .mobile-vote-list {
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pc-vote-list {
+    width: 50vw;
+}
+.tablet-vote-list {
+    width: 70vw;
+}
+.mobile-vote-list {
+    
+}
+
+//태블릿 화면에서 좀 작아지면 화면에 하나만 보이도록 설정
+// @mixin tablet-width($width) {
+//     @if($width < 1218px) {
+//         width: 50vw;
+//     } @else {
+//         width: 70vw;
+//     }
+// }
+
+%width {
+    width: 75vw;
+}
+
+.mobile-vote-list {
+    @extend %width;
+}
+
+@media only screen and (max-width: 769px) {
+    %width {
+        width: 50vw;
+    }
+}
