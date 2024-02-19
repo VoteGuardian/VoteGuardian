@@ -1,0 +1,61 @@
+.vote-main-pc-wrap {
+    display: flex;
+    .vote-main-flex {
+        width: 60%;
+        display: flex;
+        justify-content: center;
+        > div {
+            display: flex;
+            align-items: center;
+        }
+        .vote-main-top {
+            .top-flex {
+                display: flex;
+                .top-image {
+                    position: relative;
+                    max-width: 200px;
+                    width: 200px;
+                    height: 200px;
+                    //border: 2px solid #4A83EF;
+                }
+                .top-text-flex {
+                    display: flex;
+                    align-items: center;
+                    margin-left: 5em;
+                    .text-text {
+                        p {
+                            margin: 10px 0;
+                        }
+                        > p:nth-child(1) {
+                            font-size: 2vmax;
+                        }
+                        > p:nth-child(2) {
+                            font-size: 1vmax;
+                        }
+                        > p:nth-child(3) {
+                            font-size: 1vmax;
+                        }
+                    }
+                }
+            }
+        }
+        .vote-main-mid {
+            .mid-title {
+                font-size: 1.7vmax;
+                margin: 50px 0;
+            }
+            .function-wrap {
+                margin: 50px 0;
+                .function {
+                    font-size: 1.2vmax;
+                    margin: 15px 0;
+                }
+                .function-detail {
+                    font-size: 1vmax;
+                    margin: 5px 0;
+                }
+            }
+        }
+    }
+    
+}
