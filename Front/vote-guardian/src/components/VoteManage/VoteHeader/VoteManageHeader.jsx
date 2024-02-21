@@ -1,6 +1,6 @@
 import './VoteManageHeader.scss';
-import { useRecoilState } from 'recoil';
-import { voteState } from "@/recoil/atoms/createVoteListState";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { voteState, voteType } from "@/recoil/atoms/voteAtoms";
 import { useEffect } from 'react';
 import { Mobile, PC, Tablet } from '@/hooks/useResize';
 
@@ -12,6 +12,9 @@ export default function VoteManageHeader() {
 
     const [currentVoteState, setCurrentVoteState] = useRecoilState(voteState);
 
+    //생성한 투표 목록인지 참여 가능한 투표 목록인지 구분할 변수
+    const type = useRecoilValue(voteType);
+
     //페이지가 바뀔 때마다 실행
     useEffect(() => {
         //투표의 상태를 선택할 수 있는 버튼 목록
@@ -19,7 +22,12 @@ export default function VoteManageHeader() {
         for(let i = 0; i < voteStateList.length; i++) {
             voteStateList[i].classList.remove('selected');
         }
-        voteStateList[currentVoteState].classList.add('selected');
+        console.log(voteStateList)
+        if(type === 'create') voteStateList[currentVoteState].classList.add('selected');
+        else {
+            const participateState = currentVoteState-1;
+            voteStateList[participateState].classList.add('selected');
+        }
     }, [currentVoteState]);
 
     //전체를 눌렀을 때 모든 투표 목록을 불러오기
@@ -48,7 +56,7 @@ export default function VoteManageHeader() {
                     </div>
                     <div className='vote-state-list-wrap'>
                         <ul className='vote-state-list'>
-                            <li onClick={handleEntireList}>전체</li>
+                            {type === 'create' && <li onClick={handleEntireList}>전체</li>}
                             <li onClick={handleScheduleList}>예정</li>
                             <li onClick={handleProgressList}>진행</li>
                             <li onClick={handleEndList}>종료</li>

@@ -3,7 +3,7 @@ import { GrCaretPrevious } from "react-icons/gr";
 import { GrCaretNext } from "react-icons/gr";
 import './Pagination.scss';
 import { useRecoilState, useRecoilValue } from "recoil";
-import { votePage, voteTotalPage } from "@/recoil/atoms/createVoteListState";
+import { votePage, voteTotalPage } from "@/recoil/atoms/voteAtoms";
 import { useEffect } from "react";
 
 export default function Pagination() {

@@ -20,3 +20,21 @@ export async function getCreateVoteList(state, page, email) {
         console.log(e);
     }
 }    
+
+export async function getParticipateVoteList(state, page, email) {
+    const response = await fetch(`${VOTE_URL}/link?state=${state}&page=${page}&email=${email}`, {
+        method: 'GET',
+        cache: "no-store"
+    })
+    try {
+        const result = await response.json();
+        if(result.status == 'OK') {
+            console.log("성공")
+            return result.responseDto;
+        }
+    } 
+    catch(e) {
+        console.log("에러")
+        console.log(e);
+    }
+}
