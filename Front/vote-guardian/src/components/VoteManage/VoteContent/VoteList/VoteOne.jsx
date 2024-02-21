@@ -2,32 +2,46 @@ import './VoteOne.scss';
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { useRecoilValue } from 'recoil';
-import { createVoteListState, voteState } from "@/recoil/atoms/createVoteListState";
-import { useEffect } from 'react';
+import { voteListState, voteState, voteType } from "@/recoil/atoms/voteAtoms";
 
 export default function VoteOne() {
-    const voteManageList = useRecoilValue(createVoteListState);
-
+    //불러온 (생성한 투표 목록 or 참여 가능한) 투표 목록
+    const voteList = useRecoilValue(voteListState);
+    //생성한 투표 목록인지 참여 가능한 투표 목록인지 구분할 변수
+    const type = useRecoilValue(voteType);
+    //투표의 상태(전체, 예정, 진행, 종료)
     const state = useRecoilValue(voteState);
-    useEffect(() => {
-    });
 
     return(
         <>
-        {voteManageList !== null ? voteManageList.map((vote) =>
+        {voteList !== null ? voteList.map((vote) =>
             <div key={vote.id} className='vote-info'>
                 <div className='vote-one-top'>
-                    {vote.state == 1 ? 
+                    {type === 'create' ?
+                        vote.state === 1 ?
                         <div className="vote-type before">
                             <p>예정</p>
                         </div>
-                    : (vote.state == 2) ?
+                        : vote.state === 2 ?
                         <div className="vote-type progress">
                             <p>진행</p>
                         </div>
-                    : <div className="vote-type done">
-                        <p>종료</p>
-                        </div>}
+                        : <div className="vote-type done">
+                            <p>종료</p>
+                        </div>
+                        :
+                        state === 1 ?
+                        <div className="vote-type before">
+                            <p>예정</p>
+                        </div>
+                        : state === 2 ?
+                        <div className="vote-type progress">
+                            <p>진행</p>
+                        </div>
+                        : <div className="vote-type done">
+                            <p>종료</p>
+                        </div>
+                    }
                 </div>
                 <div className='vote-content'>
                     <div className='vote-title'>
@@ -46,38 +60,19 @@ export default function VoteOne() {
                             <p className='vote-period-end'>~ {vote.finishAt.substr(0, 16)}</p>
                         </div>
                     </div>
-                    <div className='vote-period-date'>
-                        <div className='vote-period-top'>
-                            <div className='vote-period-title'>
-                                <FaRegCalendarAlt size="20"/>
-                                <p>생성 일자</p>
+                    {type === 'create' &&
+                        <div className='vote-period-date'>
+                            <div className='vote-period-top'>
+                                <div className='vote-period-title'>
+                                    <FaRegCalendarAlt size="20"/>
+                                    <p>생성 일자</p>
+                                </div>
                             </div>
-                            
+                            <div className='vote-period-bottom'>
+                                <p>{vote.createdAt}</p>
+                            </div>
                         </div>
-                        <div className='vote-period-bottom'>
-                            <p>{vote.createdAt.substr(0, 16)}</p>
-                        </div>
-                    </div>
-                    {/*
-                    <div className='vote-created-date'>
-                        <div className='vote-created-left'>
-                            <FaRegCalendarAlt size="20"/>
-                            <p className='vote-create'>생성 일자</p>
-                        </div>
-                        <div className='vote-created-right'>
-                            <p>{vote.createdAt.substr(0, 16)}</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                        {vote.state == 1 ? 
-                            <p>투표 시작까지</p>
-                        : (vote.state == 2) ?<p>투표 종료까지</p>
-                        : <div></div>
-                        }
-                        </div>
-                    </div>
-                    */}
+                    }  
                 </div>
             </div>
         ) : (state == 0 ? 
