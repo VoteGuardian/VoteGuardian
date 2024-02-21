@@ -1,5 +1,7 @@
 package com.blockchain.voteguardian.ethereum.sevice;
 
+import com.blockchain.voteguardian.user.entity.User;
+
 public interface EthereumService {
-    String createWallet() throws Exception;
+    void createWallet(User user) throws Exception;
 }

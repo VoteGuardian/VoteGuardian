@@ -1,5 +1,6 @@
 package com.blockchain.voteguardian.ethereum.sevice;
 
+import com.blockchain.voteguardian.user.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,14 @@ public class EthereumServiceImpl implements EthereumService{
 
 
     @Override
-    public String createWallet() throws Exception {
+    public void createWallet(User user) throws Exception {
         String seed = UUID.randomUUID().toString();
         ECKeyPair ecKeyPair = Keys.createEcKeyPair();
         WalletFile aWallet = org.web3j.crypto.Wallet.createLight(seed, ecKeyPair);
-        String address = "0x" + aWallet.getAddress();
 
-        return address;
+        String address = "0x" + aWallet.getAddress();
+        String privatekey = "0x" + ecKeyPair.getPrivateKey().toString(16);
+
+        user.WalletCreate(address, privatekey);
     }
 }

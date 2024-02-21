@@ -32,9 +32,11 @@ public class UserServiceImpl implements UserService{
     public void join(UserRequest.Create request) throws Exception {
         // 회원가입 시간
         Timestamp now = new Timestamp(System.currentTimeMillis());
+        User user = User.UserCreate(request, now);
+
         //블록체인 지갑 생성
-        String wallet = ethereumService.createWallet();
-        User user = User.UserCreate(request, now, wallet);
+        ethereumService.createWallet(user);
+
         userRepository.save(user);
     }
 

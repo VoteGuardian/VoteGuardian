@@ -37,16 +37,25 @@ public class User {
     private Timestamp createdAt;
 
     @NotNull
-    private String wallet;
+    @Column(name = "wallet_address")
+    private String walletAddress;
 
-    public static User UserCreate(UserRequest.Create request, Timestamp now, String wallet){
+    @NotNull
+    @Column(name = "wallet_private_key")
+    private String walletPrivateKey;
+
+    public static User UserCreate(UserRequest.Create request, Timestamp now){
         return User.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .nickname(request.getNickname())
                 .createdAt(now)
-                .wallet(wallet)
                 .build();
+    }
+
+    public void WalletCreate(String walletAddress, String walletPrivateKey){
+        this.walletAddress = walletAddress;
+        this.walletPrivateKey = walletPrivateKey;
     }
 
 }
