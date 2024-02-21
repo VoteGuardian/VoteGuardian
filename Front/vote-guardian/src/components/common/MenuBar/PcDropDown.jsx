@@ -25,7 +25,7 @@ export default function DropDown() {
                 </div>
                 {voteView && 
                 <div className='drop-menu'>
-                    <Link href="">투표 만들기</Link>
+                    <Link href="/VoteCreate/Select">투표 만들기</Link>
                     <Link href={{pathname: '/VoteManage', query:{type: 'participate'}}}>투표 참여하기</Link>
                     <Link href={{pathname: '/VoteManage', query:{type: 'create'}}}>투표 관리하기</Link>
                 </div>
