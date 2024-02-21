@@ -1,0 +1,96 @@
+
+.main-content-wrap {
+    width: 80%;
+    margin: auto;
+    //메인 타이틀
+    > div {
+        //display: flex;
+        ///justify-content: center;
+    }
+    .main-title-wrap {
+        margin: 35px 0;
+        text-align: center;
+        span {
+            font-size: 5vmax;
+        }
+        > span:nth-child(2) {
+            color: #4A83EF;
+        }
+    }
+    .service-feature1-wrap, .service-feature2-wrap {
+        //width: 75%;
+        margin: auto;
+        .feature1-title, .feature2-title {
+            margin: 50px 0;
+            text-align: center;
+            font-size: 1.3vmax;
+        }
+        .feature1-detail {
+            //width: 100%;
+            width: 75%;
+            margin: auto;
+            padding: 20px 20px 50px 20px;
+            border: 2px solid #4A83EF;
+            border-radius: 5px;
+            p {
+                margin: 20px
+            }
+            > p:nth-child(1) {
+                font-size: 1.2vmax;
+            }
+            > p:nth-child(2) {
+                font-size: 1vmax;
+            }
+
+            .feature1-group {
+                display: flex;
+                justify-content: space-evenly;
+            }
+        }
+        .feature2-detail-flex {
+            display: flex;
+            justify-content: space-evenly;
+            > div {
+                width: 500px;
+                height: 500px;
+                border: 2px solid #4A83EF;
+                border-radius: 5px;
+            }
+            .feature2-detail1, .feature2-detail2 {
+                padding: 20px 20px 0 20px;
+                p {
+                    margin: 20px;
+                }
+                > p:nth-child(1) {
+                    font-size: 1.2vmax;
+                }
+                > p:nth-child(2) {
+                    font-size: 1vmax;
+                }
+                .vote-style {
+                    height: 50%;
+                    margin-top: 4vmax;
+                    > p {
+                        border: 2px solid #4A83EF;
+                        border-radius: 5px;
+                        width: 50%;
+                        height: 30%;
+                        margin: 30px auto;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 1.2vmax;
+                        color: #4A83EF;
+                    }
+                    > p:hover {
+                        background-color: #4A83EF;
+                        color: white;
+                    }
+                }
+            }
+            .feature2-detail2 {
+                
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.main-header-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 50px;
+    a {
+        line-height: 100px;
+        font-size: 1.2vmax;
+        color: black;
+        text-decoration-line: none;
+    }
+}
