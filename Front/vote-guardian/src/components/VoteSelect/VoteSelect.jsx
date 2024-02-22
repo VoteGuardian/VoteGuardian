@@ -12,6 +12,7 @@ export default function VoteSelect() {
         //찬반투표는 true, 선거투표는 false
         if(voteType === 'yn') setVote({type: true});
         else setVote({type: false});
+
         //선택한 투표 버튼에 색을 입힘
         const voteTypeList = document.getElementsByClassName('vote-style')[0].childNodes;
         for(let i = 0; i < voteTypeList.length; i++) {
@@ -34,7 +35,7 @@ export default function VoteSelect() {
                     <p className='yn'onClick={handleVoteType}>찬반 투표</p>
                     <p className='ele'onClick={handleVoteType}>선거 투표</p>
                 </div>
-                <Link href='' style={{ textDecoration: "none" }}>
+                <Link href='/VoteCreate/Information' style={{ textDecoration: "none" }}>
                     <Button buttonType='next' text='다음 단계로'></Button>
                 </Link>
             </div>

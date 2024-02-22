@@ -1,0 +1,93 @@
+
+.vote-content-flex {
+    display: flex;
+    width: 80%;
+    //찬반 투표인지 선거 투표인지
+    .vote-type-wrap {
+        background-color: rgba( #4A83EF, 0.5 );
+        width: 6vmax;
+        height: 2.2vmax;
+        border-radius: 25px;
+        margin: 15px 0;
+        p {
+            line-height: 2.2vmax;
+            text-align: center;
+            font-size: 0.9vmax;
+        }
+    }
+    .info-title {
+        font-size: 1.3vmax;
+        margin: 20px 0;
+    }
+    //투표 날짜
+    .vote-date {
+        .date-flex {
+            display: flex;
+        }
+    }
+    //투표 제목
+    .vote-title{
+        .title-input-wrap {
+            input {
+                width: 40vmax;
+                height: 4vmax;
+                border-radius: 20px;
+                padding: 0 20px;
+                font-size: 1vmax;
+            }
+        }
+        
+    }
+    .title-error, .content-error {
+        display: none;
+        color: #E7516D;
+        padding: 10px;
+        &.show {
+            display: block;
+        }
+    } 
+    //투표 정보
+    .vote-info {
+        .info-input-wrap{
+            textarea {
+                border: 2px solid;
+                width: 40vmax;
+                height: 15vmax;
+                border-radius: 20px;
+                padding: 20px;
+                font-size: 1vmax;
+            }
+        }
+    }
+    //후보
+    .vote-candidate {
+        .candidate-plus {
+            width: 7vmax;
+            height: 5vmax;
+            border: 2px solid #4A83EF;
+            border-radius: 20px;
+            p {
+                line-height: 5vmax;
+                text-align: center;
+                font-size: 2vmax;
+                color: #4A83EF;
+            }
+            &:hover {
+                cursor: pointer;
+                background-color: #4A83EF;
+                p {
+                    color: white;
+                }
+            }
+        }
+    }
+    .button-group-flex {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 10px;
+        a {
+            margin: 0 20px;
+        }
+    }
+}
+
