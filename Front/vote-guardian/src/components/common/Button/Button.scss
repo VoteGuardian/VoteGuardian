@@ -11,3 +11,19 @@
         font-size: 1.2vmax;
     }
 }
+.select {
+    width: 6vmax;
+    height: 2vmax;
+    border-radius: 5px;
+    p {
+        color: white;
+        line-height: 2vmax;
+        text-align: center;
+    }
+    &.negative {
+        background-color: #E7516D;
+    }
+    &.positive {
+        background-color: #4A83EF;
+    }
+}
