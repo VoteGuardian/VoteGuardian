@@ -1,0 +1,17 @@
+.alert {
+    position: absolute;
+    top: 30%;
+    width: 44vmax;
+    height: 2.5vmax;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    line-height: 2.5vmax;
+    &.positive {
+        background-color: #4A83EF;
+
+    }
+    &.negative {
+        background-color: #E7516D;
+    }
+}

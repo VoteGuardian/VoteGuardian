@@ -1,16 +1,22 @@
 .candidate-content-flex {
     display: flex;
     width: 80%;
+    margin: 40px 0;
     //후보 등록
     .register-title {
         font-size: 1.8vmax;
+        margin: 0.8em 0;
     }
     //후보 이름, 태그, 상세 정보
     .name-title {
-        font-size: 1.3vmax;
+        font-size: 1.1vmax;
     }
+    //후보 이름
     .candidate-info-flex {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0.8em 0;
         .candidate-image-wrap {
             display: flex;
             justify-content: center;
@@ -24,9 +30,11 @@
     //후보 이름
     .name-wrap {
         input {
+            padding-left: 10px;
             width: 27vmax;
-            height: 2vmax;
+            height: 2.5vmax;
             border-radius: 10px;
+            font-size: 0.8vmax;
         }
     }
     //후보 이름과 상세 정보 내용 제한 문구
@@ -51,10 +59,16 @@
     .tag-wrap {
         display: flex;
         align-items: center;
+        margin-bottom: 0.8em;
+        p {
+            margin-right: 1em;
+        }
         input {
+            font-size: 0.8vmax;
+            padding-left: 10px;
             border-radius: 10px;
             width: 37vmax;
-            height: 2vmax;
+            height: 2.5vmax;
         }
     }
     //작성한 태그 목록
@@ -67,9 +81,13 @@
     }
     //상세 정보 {
     .detail-wrap {
+        margin: 1.5em 0;
+        p {
+            padding: 10px;
+        }
         textarea {
             border: 2px solid;
-            width: 37vmax;
+            width: 38vmax;
             height: 15vmax;
             border-radius: 20px;
             resize: none;
