@@ -1,6 +1,6 @@
-import './InfoMenu.scss'
+import './VoteMenu.scss'
 
-export default function InfoMenu() {
+export default function VoteMenu() {
     return (
         <>
             <div className="vote-menu-flex">

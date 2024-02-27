@@ -1,0 +1,94 @@
+.candidate-content-flex {
+    display: flex;
+    width: 80%;
+    //후보 등록
+    .register-title {
+        font-size: 1.8vmax;
+    }
+    //후보 이름, 태그, 상세 정보
+    .name-title {
+        font-size: 1.3vmax;
+    }
+    .candidate-info-flex {
+        display: flex;
+        .candidate-image-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
+            border-radius: 20px;
+            width: 10vmax;
+            height: 8vmax;
+        }
+    }
+    //후보 이름
+    .name-wrap {
+        input {
+            width: 27vmax;
+            height: 2vmax;
+            border-radius: 10px;
+        }
+    }
+    //후보 이름과 상세 정보 내용 제한 문구
+    .name-error, .detail-error {
+        display: none;
+        color: #E7516D;
+        padding: 10px;
+        &.show {
+            display: block;
+        }
+    }
+    //태그 관련
+    //태그 제한 문구
+    .tag-limit {
+        display: flex;
+        flex-direction: row-reverse;
+        p {
+            color: #E7516D;
+        }
+    }
+    //태그 타이틀과 태그 작성
+    .tag-wrap {
+        display: flex;
+        align-items: center;
+        input {
+            border-radius: 10px;
+            width: 37vmax;
+            height: 2vmax;
+        }
+    }
+    //작성한 태그 목록
+    .tag-list-flex {
+        display: flex;
+        align-items: center;
+        p {
+            color: #4A83EF;
+        }
+    }
+    //상세 정보 {
+    .detail-wrap {
+        textarea {
+            border: 2px solid;
+            width: 37vmax;
+            height: 15vmax;
+            border-radius: 20px;
+            resize: none;
+            padding: 20px;
+            font-size: 1vmax;
+        }
+    }
+    
+
+    //이전과 등록 버튼
+    .button-group-flex {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 10px;
+        div:nth-child(1) {
+            margin-left: 10px;
+        }
+        a {
+            margin: 0 20px;
+        }
+    }
+}

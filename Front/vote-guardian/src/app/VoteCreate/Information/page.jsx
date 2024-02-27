@@ -1,6 +1,6 @@
 'use client'
 import InfoContent from "@/components/VoteInformation/InfoContent";
-import InfoMenu from "@/components/VoteInformation/InfoMenu";
+import VoteMenu from "@/components/VoteMenu/VoteMenu";
 import { RecoilRoot } from "recoil";
 import './Information.scss'
 
@@ -8,7 +8,7 @@ export default function Information() {
     return (
         <RecoilRoot>
             <div className="vote-info-flex">
-                <InfoMenu/>
+                <VoteMenu/>
                 <InfoContent/>
             </div>
         </RecoilRoot>
