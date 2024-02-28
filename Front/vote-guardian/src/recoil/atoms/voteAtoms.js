@@ -45,6 +45,12 @@ export const candidateListState = atom({
     default: [],
     effects_UNSTABLE: [persistAtom]
 })
+//투표자 목록
+export const voterListState = atom({
+    key: 'voterListState',
+    default: [],
+    effects_UNSTABLE: [persistAtom]
+})
 
 // const candidate = {
 //     num: int,

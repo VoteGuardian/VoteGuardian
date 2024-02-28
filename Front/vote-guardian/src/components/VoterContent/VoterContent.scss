@@ -1,0 +1,29 @@
+//투표자 한 명 등록
+.voter-one-add-wrap {
+    position: absolute;
+    top: 10%;
+    left: 32%;
+    width: 30vmax;
+    height: 26vmax;
+    border: 2px solid #4A83EF;
+    label {
+        display: block;
+    }
+}
+.voter-content-flex {
+    display: flex;
+    //검색 input과 버튼
+    .voter-search-wrap{
+        display: flex;
+        .voter-search-button {
+            border: 1px solid #4A83EF;
+            color: #4A83EF;
+        }
+    }
+    .voter-list-big-wrap {
+        display: flex;
+        .voter-list-top, .voter-list-button-group, .voter-num-group {
+            display: flex;
+        }
+    }
+}

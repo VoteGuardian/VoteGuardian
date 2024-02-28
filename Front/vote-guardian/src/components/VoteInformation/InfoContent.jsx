@@ -62,30 +62,32 @@ export default function InfoContent() {
     }
     //투표 제목
     function handleTitleChange(e) {
-        setVote({
-            ...vote,
-            title: e.target.value
-        })
         //제목은 40글자 제한
         if(e.target.value.length > 40) {
             document.getElementsByClassName("title-error")[0].classList.add('show');
             document.getElementsByClassName("title-input")[0].classList.add('error');
         }
         else {
+            setVote({
+                ...vote,
+                title: e.target.value
+            })
             document.getElementsByClassName("title-error")[0].classList.remove('show');
             document.getElementsByClassName("title-input")[0].classList.remove('error');
         }
     }
     //투표 정보
     function handleContentChange(e) {
-        setVote({
-            ...vote,
-            content: e.target.value
-        })
         if(e.target.value.length > 1100) {
             document.getElementsByClassName("content-error")[0].classList.add('show');
         }
-        else document.getElementsByClassName("content-error")[0].classList.remove('show');
+        else {
+            setVote({
+                ...vote,
+                content: e.target.value
+            })
+            document.getElementsByClassName("content-error")[0].classList.remove('show');
+        }
     }
     //이전 버튼 클릭
     function handlePrev() {
