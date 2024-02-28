@@ -39,6 +39,38 @@ export const voteInfo = atom({
     default: {},
     effects_UNSTABLE: [persistAtom]
 })
+//후보자 목록
+export const candidateListState = atom({
+    key: 'candidateListState',
+    default: [],
+    effects_UNSTABLE: [persistAtom]
+})
+
+// const candidate = {
+//     num: int,
+//     name : string,
+//     tag,
+//     content : string,
+//     picture : boolean
+// }
+
+// const candidateList = candidate[];
+
+// const candidateListState = atom<candidate>({
+//     key: 'todoListState',
+//     default: [],
+//   })
+
+// const candidateList = atomFamily<Candidate, CandidateNum>({
+//     key: "candidateList",
+//     default: (num) => ({
+//         num,
+//         picture: false,
+//         name :'',
+//         content: '',
+//         tag: []
+//     })
+// })
 
 //아래 두 개는 voteListState로 대체된 상태
 //회원이 생성한 투표 목록

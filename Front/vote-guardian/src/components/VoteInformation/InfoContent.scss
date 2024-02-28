@@ -1,7 +1,40 @@
-
+//후보자 한 명 상세창
+.candidate-one-wrap {
+    position: absolute;
+    top: 10%;
+    left: 32%;
+    width: 35vmax;
+    height: 36vmax;
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(#4A83EF,0.4);
+    border: 3px solid #4A83EF;
+    //opacity: 0;
+    transition: all 180ms ease-in;
+    .candidate-one-flex {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 10% 0;
+        //후보 이름
+        .candidate-one-name {
+            > p:nth-child(1) {
+                font-size: 1.8vmax;
+            }
+        }
+        //태그
+        .candidate-one-tag {
+            display: flex;
+            .tag-group {
+                color: #4A83EF;
+            }
+        }
+    }
+}
 .vote-content-flex {
     display: flex;
     width: 80%;
+    height: 100%;
     //찬반 투표인지 선거 투표인지
     .vote-type-wrap {
         background-color: rgba( #4A83EF, 0.5 );
@@ -23,6 +56,12 @@
     .vote-date {
         .date-flex {
             display: flex;
+            input {
+                width: 11vmax;
+                height: 2vmax;
+                border-radius: 20px;
+                font-size: 0.8vmax;
+            }
         }
     }
     //투표 제목
@@ -61,6 +100,19 @@
     }
     //후보
     .vote-candidate {
+        .candidate-flex {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .candidate-title-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            p:nth-child(2) {
+                color: #E7516D;
+            }
+        }
         .candidate-plus {
             width: 7vmax;
             height: 5vmax;
@@ -85,6 +137,9 @@
         display: flex;
         justify-content: flex-end;
         margin: 0 10px;
+        div:nth-child(1) {
+            margin-left: 10px;
+        }
         a {
             margin: 0 20px;
         }

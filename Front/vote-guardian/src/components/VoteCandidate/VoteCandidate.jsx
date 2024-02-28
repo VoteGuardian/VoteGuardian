@@ -2,18 +2,25 @@ import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { FaRegImage } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
+import { useRecoilState } from 'recoil';
+import { candidateListState } from '@/recoil/atoms/voteAtoms';
 import Button from '../Common/Button/Button';
-import './VoteCandidate.scss'
 import Alert from '../Common/Alert/Alert';
-
+import './VoteCandidate.scss'
 
 export default function VoteCandidate() {
     const router = useRouter();
-    const [tagList, setTagList] = useState([]);
+    //이름, 상세 정보, 사진, 태그
     const [name, setName] = useState('');
     const [detail, setDetail] = useState('');
+    const [picture, setPicture] = useState(false);
+    const [tagList, setTagList] = useState([]);
+    //알람창
     const [alert, setAlert] = useState(false);
     const [alertText, setAlertText] = useState('');
+    //후보자들 정보
+    const [candidateList, setCandidateList] = useRecoilState(candidateListState)
+
 
     //후보 이름
     function handleNameChange(e) {
@@ -30,7 +37,7 @@ export default function VoteCandidate() {
         if(detail.length > 1100) {
             document.getElementsByClassName("detail-error")[0].classList.add('show');
         }
-        else document.getElementsByClassName("detail-error")[0].classList.add('show');
+        else document.getElementsByClassName("detail-error")[0].classList.remove('show');
     }
     //태그 추가
     function handleTagAdd(e) {
@@ -61,6 +68,7 @@ export default function VoteCandidate() {
         }
         setTagList([...tagList])
     }
+    //사진 등록
     //알람창
     function handleAlert() {
         //나타났다가 2초 뒤 쯤 사라지게 함
@@ -75,6 +83,7 @@ export default function VoteCandidate() {
         router.push('/VoteCreate/Information')
     }
     //등록 버튼
+    let num = 0;
     function handleRegister() {
         //후보 이름과 상세 정보는 필수이며 조건에 맞는지 확인
         if(name.length > 50 || detail.length > 1100) {
@@ -90,10 +99,21 @@ export default function VoteCandidate() {
             handleAlert();
         }
         else {
-            //투표자 등록 페이지로 이동
-            //router.push('')
+            setCandidateList(
+                prevList => [...prevList, {
+                    num: candidateList.length+1,
+                    name: name,
+                    content: detail,
+                    picture: picture,
+                    tag: tagList
+                }]
+            )
+
+            //투표 정보 입력 페이지로 이동
+            router.push('/VoteCreate/Information')
         }
     }
+
     return(
         <>
             <div className="candidate-content-flex">
