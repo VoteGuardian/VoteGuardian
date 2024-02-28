@@ -144,5 +144,14 @@
             margin: 0 20px;
         }
     }
+    //input 창들이 조건에 맞지 않을 경우
+    input {
+        &.error {
+            border: 2px solid #E7516D;
+        }
+        &.success {
+            border: 2px solid #4A83EF;
+        }
+    }
 }
 

@@ -11,7 +11,8 @@ import Alert from "../Common/Alert/Alert";
 export default function InfoContent() {
     const router = useRouter();
     const [vote, setVote] = useRecoilState(voteInfo);
-    const currentTime = new Date();
+    //투표 기간을 제대로 설정했는지
+    const [dateFlag, setDateFlag] = useState(false); 
     //후보자 목록
     const [candidateList, setcandidateList] = useRecoilState(candidateListState);
     //알람창
@@ -22,42 +23,100 @@ export default function InfoContent() {
     //후보자 한 명의 상세 정보를 띄울 때
     const [candidateFlag, setCandidateFlag] = useState(false);
 
-    let titleText = '';
-    let contentText = '';
+    //투표 시작 날짜를 현재보다 더 전의 날짜로 선택하지 못하게 하기 위함
+    const offset = 1000 * 60 * 60 * 9;
+    const koreaNow = new Date((new Date()).getTime() + offset);
+    const time = koreaNow.toISOString().replace("T", " ").split('.')[0].slice(0,16);
 
-    function handleTitleChange(e) {
-        titleText = e.target.value;
-        //제목은 40글자 제한
-        if(titleText.length > 40) {
-            document.getElementsByClassName("title-error")[0].classList.add('show');
-        }
-        else document.getElementsByClassName("title-error")[0].classList.remove('show');
+    useEffect(() => {
+        if(vote.startAt < vote.finishAt) setDateFlag(true)
+    }, [])
+    //투표 기간(시작 날짜)
+    function handleStartDate(e){
+        setVote({
+            ...vote,
+            startAt: e.target.value
+        })
     }
-
+    //투표 기간(마감 날짜)
+    function handleEndDate(e) {
+        //투표 시작 날짜를 선택하지 않은 상태면 문구를 출력하고 선택한 날짜를 없앰
+        if(vote.startAt === '') {
+            setAlertText('투표 시작 날짜를 먼저 선택해주세요')
+            handleAlert();
+            e.target.value = ''
+        }
+        //투표 시작 날짜가 더 빠를 경우
+        else if(vote.startAt >= e.target.value) {
+            setAlertText('투표 마감 날짜는 투표 시작 날짜보다 빠를 수 없습니다')
+            handleAlert();
+            e.target.value = ''
+        }
+        else {
+            setVote({
+                ...vote,
+                finishAt: e.target.value
+            })
+            setDateFlag(true);
+        }
+    }
+    //투표 제목
+    function handleTitleChange(e) {
+        setVote({
+            ...vote,
+            title: e.target.value
+        })
+        //제목은 40글자 제한
+        if(e.target.value.length > 40) {
+            document.getElementsByClassName("title-error")[0].classList.add('show');
+            document.getElementsByClassName("title-input")[0].classList.add('error');
+        }
+        else {
+            document.getElementsByClassName("title-error")[0].classList.remove('show');
+            document.getElementsByClassName("title-input")[0].classList.remove('error');
+        }
+    }
+    //투표 정보
     function handleContentChange(e) {
-        contentText = e.target.value;
-        if(contentText.length > 1100) {
+        setVote({
+            ...vote,
+            content: e.target.value
+        })
+        if(e.target.value.length > 1100) {
             document.getElementsByClassName("content-error")[0].classList.add('show');
         }
         else document.getElementsByClassName("content-error")[0].classList.remove('show');
     }
+    //이전 버튼 클릭
     function handlePrev() {
         //투표 종류 선택 페이지로 이동
         router.push('/VoteCreate/Select')
     }
     //다음 버튼을 클릭할 경우
     function handleNext() {
-        //투표 제목과 정보의 내용의 길이가 조건을 충족했을 경우
-        if(0 < titleText.length && titleText.length <= 40 && 0 < contentText.length && contentText.length <= 1100) {
-            router.push('/VoteCreate/Voter')
+        //투표 기간이 조건에 맞지 않을 경우
+        if(!dateFlag) {
+            setAlertText('투표 기간이 조건에 맞지 않으니 다시 설정해주세요');
+            handleAlert();
         }
-        //충족되지 않았을 경우 알람을 띄워줘야함
+        //투표 제목이 조건에 맞지 않을 경우
+        else if(vote.title.length == 0 || vote.title.length > 40) {
+            setAlertText('투표 제목은 40글자 이내로 작성해주세요');
+            handleAlert();
+        }
+        //투표 정보가 조건에 맞지 않을 경우
+        else if(vote.content.length == 0 || vote.content.length > 1100) {
+            setAlertText('투표 정보는 1100글자 이내로 작성해주세요');
+            handleAlert();
+        }
+        //투표 후보 수가 조건에 맞지 않을 경우
+        else if(candidateList.length == 0) {
+            setAlertText('투표 후보는 1개 이상 등록해주세요');
+            handleAlert();
+        }
         else {
-            errorText = '예를 들어 어떤거'
-            setTimeout(() => {
-                setError(true)
-            }, 2000)
-            console.log('조건이 충족되지 않음')
+            //후보자 등록 페이지로 이동
+            router.push('/VoteCreate/Voter')
         }
     }
     //투표 후보 등록 버튼을 클릭할 경우 후보 등록 페이지로 이동
@@ -84,12 +143,10 @@ export default function InfoContent() {
         setcandidateList(candidateTmp);
         setCandidateFlag(false)
     }
-
     //후보창 닫기
     function handleCandidateClose() {
         setCandidateFlag(false)
     }
-
     //알람창
     function handleAlert() {
         //나타났다가 2초 뒤 쯤 사라지게 함
@@ -98,9 +155,6 @@ export default function InfoContent() {
             setAlert(false)
         }, 2000)
     }
-
-    useEffect(() => {
-    })
 
     return (
         <>
@@ -157,21 +211,21 @@ export default function InfoContent() {
                     <div className="vote-date">
                         <p className="info-title">투표 기간</p>
                         <div className="date-flex">
-                            <input type="datetime-local" className="time-start"></input>
-                            <input type="datetime-local"></input>
+                            <input value={vote.startAt} onInput={handleStartDate} type="datetime-local" min={time} className="time-start"></input>
+                            <input value={vote.finishAt} onInput={handleEndDate} type="datetime-local"></input>
                         </div>
                     </div>
                     <div className="vote-title">
                         <p className="info-title">투표 제목</p>
                         <div className="title-input-wrap">
-                            <input onInput={handleTitleChange} type="text" placeholder="투표 제목을 입력하세요"/>
+                            <input value={vote.title} className="title-input" onInput={handleTitleChange} type="text" placeholder="투표 제목을 입력하세요"/>
                         </div>
                         <p className="title-error">투표 제목은 40글자 이하여야 합니다</p>
                     </div>
                     <div className="vote-info">
                         <p className="info-title">투표 정보</p>
                         <div className="info-input-wrap">
-                            <textarea onInput={handleContentChange} name="content" cols="50" rows="22" placeholder="투표에 대해서 설명할 내용을 작성하세요"/>
+                            <textarea value={vote.content} onInput={handleContentChange} name="content" cols="50" rows="22" placeholder="투표에 대해서 설명할 내용을 작성하세요"/>
                         </div>
                         <p className="content-error">투표 정보는 1100글자 이하여야 합니다</p>
                     </div>
