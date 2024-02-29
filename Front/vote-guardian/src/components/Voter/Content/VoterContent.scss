@@ -21,9 +21,17 @@
         }
     }
     .voter-list-big-wrap {
-        display: flex;
         .voter-list-top, .voter-list-button-group, .voter-num-group {
             display: flex;
         }
+        table {
+            border-collapse : collapse;
+        }
+        th{
+            border-bottom: 1px solid;
+        }
     }
+}
+.button-group-flex {
+    display: flex;
 }

@@ -51,7 +51,11 @@ export const voterListState = atom({
     default: [],
     effects_UNSTABLE: [persistAtom]
 })
-
+//투표자 한 명 등록
+export const voterOneState = atom({
+    key: 'voterOneState',
+    default: false
+})
 // const candidate = {
 //     num: int,
 //     name : string,

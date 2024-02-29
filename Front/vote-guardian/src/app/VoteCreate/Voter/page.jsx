@@ -1,7 +1,7 @@
 'use client'
 import { RecoilRoot } from "recoil";
 import VoteMenu from "@/components/VoteMenu/VoteMenu";
-import VoterContent from "@/components/VoterContent/VoterContent";
+import VoterContent from "@/components/Voter/Content/VoterContent";
 import './Voter.scss'
 
 
