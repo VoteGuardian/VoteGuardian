@@ -14,7 +14,8 @@ export default function VoterContent() {
     //한명 등록하기, 여러명 등록하기 창 띄우기
     const [voterOne, setVoterOne] = useRecoilState(voterOneState);
     const [voterFileFlag, setVoterFileFlag] = useState(false);
-    const [vote, setVote] = useRecoilState(voteInfo); 
+    const vote = useRecoilValue(voteInfo);
+    const [alertType, setAlertType] = useState('negative');
     const candidateList = useRecoilValue(candidateListState);
     
     const [voterList, setVoterList] = useRecoilState(voterListState);
@@ -73,9 +74,44 @@ export default function VoterContent() {
     }
     //등록 버튼 클릭
     function handleRegister() {
-        
+        //이메일은 더미(회원 이메일)
+        const email = "ko123@g.com"
+        //투표 등록
+        if(voterList.length > 0) {
+            const voteReq = {
+                email: email,
+                title: vote.title,
+                content: vote.content,
+                type : vote.type,
+                startAt: vote.startAt,
+                finishAt: vote.finishAt,
+                candidateList: candidateList,
+                voterList: voterList
+            }
+            createVote(voteReq);
+        }
+        else {
+            setAlertText('투표자는 한 명 이상 등록해야 합니다');
+            setAlertType('negative');
+            handleAlert();
+        }
     }
-    
+    //생성 api
+    async function createVote(voteReq) {
+        //api 요청
+        const result = await createVoteOne(voteReq);
+        if(result === 'OK') {
+            setAlertText('투표가 등록되었습니다')
+            setAlertType('positive');
+            handleAlert();
+            setTimeout(() => {
+                router.push('/VoteMain')
+            }, 1000)
+            //세션에 담겨있던 투표 정보 삭제
+            sessionStorage.removeItem('persist')
+        }
+        else console.log('실패')
+    }
 
     //알람창
     function handleAlert() {
@@ -89,7 +125,7 @@ export default function VoterContent() {
     return(
         <>
             {alert &&
-                    <Alert type='negative' text={alertText}/>
+                    <Alert type={alertType} text={alertText}/>
             }
             {voterOne &&
                 <VoterOne/>
@@ -116,7 +152,7 @@ export default function VoterContent() {
                                 </div>
                             </div>
                             <div className='voter-num-group'>
-                                <p>전체 250</p>
+                                <p>전체 {voterList.length}</p>
                                 <p>선택 {voterSelectNum}</p>
                             </div>
                         </div>

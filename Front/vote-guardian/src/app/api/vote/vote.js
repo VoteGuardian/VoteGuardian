@@ -38,3 +38,22 @@ export async function getParticipateVoteList(state, page, email) {
         console.log(e);
     }
 }
+
+export async function createVoteOne(vote) {
+    const formData = new FormData();
+    formData.append('request', new Blob([JSON.stringify(vote)], { type: 'application/json' }))
+    const response = await fetch(VOTE_URL, {
+        method: 'POST',
+        body: formData
+    })
+    try {
+        const result = await response.json();
+        if(result.status == 'OK') {
+            console.log('성공')
+            return 'OK'
+        }
+    }
+    catch(e) {
+        console.log(e)
+    }
+}

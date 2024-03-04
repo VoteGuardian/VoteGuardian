@@ -33,9 +33,10 @@ export default function InfoContent() {
     }, [])
     //투표 기간(시작 날짜)
     function handleStartDate(e){
+        const start = e.target.value.replace("T", " ").split('.')[0].slice(0,16) + ":00"
         setVote({
             ...vote,
-            startAt: e.target.value
+            startAt: start
         })
     }
     //투표 기간(마감 날짜)
@@ -53,9 +54,10 @@ export default function InfoContent() {
             e.target.value = ''
         }
         else {
+            const end = e.target.value.replace("T", " ").split('.')[0].slice(0,16) + ":00"
             setVote({
                 ...vote,
-                finishAt: e.target.value
+                finishAt: end
             })
             setDateFlag(true);
         }

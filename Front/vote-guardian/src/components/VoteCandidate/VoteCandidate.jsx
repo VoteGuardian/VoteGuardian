@@ -45,8 +45,11 @@ export default function VoteCandidate() {
             //태그 개수는 5개로 제한
             if(tagList.length < 5) {
                 const tag = e.target.value;
-                tagList.push(tag)
-                setTagList([...tagList])
+                setTagList(
+                    prevList => [...prevList, {
+                        tag: tag
+                    }]
+                )
                 //작성한 태그 내용 초기화
                 e.target.value = ''
             }
@@ -105,7 +108,7 @@ export default function VoteCandidate() {
                     name: name,
                     content: detail,
                     picture: picture,
-                    tag: tagList
+                    tagList: tagList
                 }]
             )
 
@@ -142,7 +145,7 @@ export default function VoteCandidate() {
                     <div className='tag-list-flex'>
                         {tagList && tagList.map((tag) => 
                         <>
-                            <p>#{tag}</p>
+                            <p>#{tag.tag}</p>
                             <ImCross onClick={handleTagRemove}/>
                         </>
                         )}

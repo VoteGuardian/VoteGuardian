@@ -51,7 +51,6 @@ export default function VoterOne() {
                 for(let i = 0; i < voterList.length; i++) {
                     //이미 등록된 사람이라면
                     if(voterList[i].email === email) {
-                        setVoterOne(false)
                         voterIs = true
                         setAlertText('이미 등록된 사람입니다')
                         handleAlert();
@@ -91,7 +90,7 @@ export default function VoterOne() {
     return (
         <>
         {alert &&
-                <Alert type='negative' text={alertText}/>
+            <Alert type='negative' text={alertText}/>
         }
         <div className='voter-one-add-wrap'>
             <p>투표자 한 명 등록하기</p>
