@@ -39,12 +39,16 @@ export async function getParticipateVoteList(state, page, email) {
     }
 }
 
-export async function createVoteOne(vote) {
+export async function createVoteOne(voteReq, photoList) {
     const formData = new FormData();
-    formData.append('request', new Blob([JSON.stringify(vote)], { type: 'application/json' }))
+    formData.append('request', new Blob([JSON.stringify(voteReq)], { type: 'application/json' }))
+    for(let i = 0; i < photoList.length; i++) {
+        formData.append('photos', photoList[i]);
+    }
+    console.log(formData.get('photos'))
     const response = await fetch(VOTE_URL, {
         method: 'POST',
-        body: formData
+        body: formData,
     })
     try {
         const result = await response.json();
@@ -52,8 +56,29 @@ export async function createVoteOne(vote) {
             console.log('성공')
             return 'OK'
         }
+        else {
+            console.log(result)
+        }
     }
     catch(e) {
         console.log(e)
     }
+
+    //const reader = new FileReader();
+    //formData.append('photos', photoList)
+    /*
+        console.log(photoList[i]);
+        reader.readAsDataURL(photoList[i]);
+        reader.onload = (readerEvent) => {
+            formData.append("photos", readerEvent.target.result);
+        };
+        */
+        //const readStream = fs.createReadStream(photoList[i].filepath);
+    // const imageInfo = DataURIToBlob(fields['image']);
+    //const ext = imageInfo.type.split('/')[1];
+    //console.log(ext)
+    //formData.append('photos', Buffer.from(photoList))
+    // headers: {
+        //     'Content-Type': 'multipart/form-data',
+        // }
 }

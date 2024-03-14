@@ -16,8 +16,8 @@ export default function VoterContent() {
     const [voterFileFlag, setVoterFileFlag] = useState(false);
     const vote = useRecoilValue(voteInfo);
     const [alertType, setAlertType] = useState('negative');
+    //후보자 목록, 후보자 사진 목록
     const candidateList = useRecoilValue(candidateListState);
-    
     const [voterList, setVoterList] = useRecoilState(voterListState);
     //선택한 투표자 수
     const [voterSelectNum, setVoterSelectNum] = useState(0);
@@ -27,6 +27,7 @@ export default function VoterContent() {
     
     //투표자 검색
     function handleVoterSearch() {
+
         console.log('검색')
     }
 
@@ -77,6 +78,7 @@ export default function VoterContent() {
         //이메일은 더미(회원 이메일)
         const email = "ko123@g.com"
         //투표 등록
+        const photoList = [];
         if(voterList.length > 0) {
             const voteReq = {
                 email: email,
@@ -88,7 +90,14 @@ export default function VoterContent() {
                 candidateList: candidateList,
                 voterList: voterList
             }
-            createVote(voteReq);
+            for(let i = 0; i < candidateList.length; i++) {
+                if(candidateList[i].picture === true) {
+                    const image = localStorage.getItem(candidateList[i].name);
+                    photoList.push(image);
+                }
+            }
+            console.log(photoList)
+            createVote(voteReq, photoList);
         }
         else {
             setAlertText('투표자는 한 명 이상 등록해야 합니다');
@@ -97,9 +106,9 @@ export default function VoterContent() {
         }
     }
     //생성 api
-    async function createVote(voteReq) {
+    async function createVote(voteReq, photoList) {
         //api 요청
-        const result = await createVoteOne(voteReq);
+        const result = await createVoteOne(voteReq, photoList);
         if(result === 'OK') {
             setAlertText('투표가 등록되었습니다')
             setAlertType('positive');

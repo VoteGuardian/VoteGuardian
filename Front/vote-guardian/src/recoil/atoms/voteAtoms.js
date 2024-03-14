@@ -7,7 +7,6 @@ const { persistAtom } = recoilPersist({
     storage: sessionStorage
 })
 
-
 //생성한 투표 목록인지 참여 가능한 투표 목록인지 판단
 export const voteType = atom({
     key: 'voteType',
@@ -56,31 +55,6 @@ export const voterOneState = atom({
     key: 'voterOneState',
     default: false
 })
-// const candidate = {
-//     num: int,
-//     name : string,
-//     tag,
-//     content : string,
-//     picture : boolean
-// }
-
-// const candidateList = candidate[];
-
-// const candidateListState = atom<candidate>({
-//     key: 'todoListState',
-//     default: [],
-//   })
-
-// const candidateList = atomFamily<Candidate, CandidateNum>({
-//     key: "candidateList",
-//     default: (num) => ({
-//         num,
-//         picture: false,
-//         name :'',
-//         content: '',
-//         tag: []
-//     })
-// })
 
 //아래 두 개는 voteListState로 대체된 상태
 //회원이 생성한 투표 목록

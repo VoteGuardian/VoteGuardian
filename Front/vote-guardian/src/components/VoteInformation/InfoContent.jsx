@@ -139,9 +139,16 @@ export default function InfoContent() {
         }
     }
     //후보 삭제
-    function handleCandidateRemove(name) {
+    function handleCandidateRemove(num) {
+        //사진이 있을 경우 사진 삭제
+        for(let i = 0; i < candidateList.length; i++) {
+            if(candidateList[i].num === num && candidateList[i].picture === true) {
+                const imageName = candidateList[i].name;
+                localStorage.removeItem(imageName);
+            } 
+        }
         //현재 후보 목록을 받아 해당하는 후보만 삭제할 임시 후보 목록
-        let candidateTmp = candidateList.filter((candidate) => candidate.name !== name);
+        let candidateTmp = candidateList.filter((candidate) => candidate.num !== num);
         
         //후보 목록 새로 설정하고 창 닫기
         setcandidateList(candidateTmp);
@@ -194,7 +201,7 @@ export default function InfoContent() {
                                 </div>
                             }
                             <div className="button-group-flex">
-                                <div onClick={() => handleCandidateRemove(candidate.name)}>
+                                <div onClick={() => handleCandidateRemove(candidate.num)}>
                                     <Button buttonType='select negative' text='삭제'></Button>
                                 </div>
                                 <div onClick={handleCandidateClose}>

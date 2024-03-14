@@ -21,10 +21,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid black;
-            border-radius: 20px;
+            //border: 1px solid black;
+            //border-radius: 20px;
             width: 10vmax;
             height: 8vmax;
+            &:hover {
+                cursor: pointer;
+            }
+            img {
+                border-radius: 20px;
+                border: 1px solid;
+            }
+        }
+    }
+    //사진 삭제 버튼
+    .image-remove-wrap {
+        display: flex;
+        width: 10vmax;
+        height: 1.5vmax;
+        justify-content: center;
+        padding-top: 15px;
+        p {
+            background-color: #E7516D;
+            color: white;
+            text-align: center;
+            line-height: 1.5vmax;
+            width: 40%;
+            border-radius: 5px;
+        }
+        &:hover {
+            cursor: pointer;
         }
     }
     //후보 이름
@@ -59,7 +85,7 @@
     .tag-wrap {
         display: flex;
         align-items: center;
-        margin-bottom: 0.8em;
+        margin: 0.8em 0;
         p {
             margin-right: 1em;
         }

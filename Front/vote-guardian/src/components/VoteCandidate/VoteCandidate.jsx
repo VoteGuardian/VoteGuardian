@@ -1,26 +1,29 @@
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
-import { FaRegImage } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
 import { useRecoilState } from 'recoil';
 import { candidateListState } from '@/recoil/atoms/voteAtoms';
+import Image from 'next/image'
+import defaultImage from '../../../public/default.jpg'
 import Button from '../Common/Button/Button';
 import Alert from '../Common/Alert/Alert';
 import './VoteCandidate.scss'
 
 export default function VoteCandidate() {
     const router = useRouter();
-    //이름, 상세 정보, 사진, 태그
+    //이름, 상세 정보, 태그
     const [name, setName] = useState('');
     const [detail, setDetail] = useState('');
-    const [picture, setPicture] = useState(false);
     const [tagList, setTagList] = useState([]);
+    //사진, 여부, 미리보기, 후보자 사진 목록
+    const [selectImage, setSelectImage] = useState([]);
+    const [imageFlag, setImageFlag] = useState(false);
+    const [imagePreview, setImagePreview] = useState(defaultImage);
     //알람창
     const [alert, setAlert] = useState(false);
     const [alertText, setAlertText] = useState('');
     //후보자들 정보
     const [candidateList, setCandidateList] = useRecoilState(candidateListState)
-
 
     //후보 이름
     function handleNameChange(e) {
@@ -65,13 +68,44 @@ export default function VoteCandidate() {
         const tagText = e.target.parentNode.previousSibling.innerText;
         for(let i = 0; i < tagList.length; i++) {
             //태그 목록에서 일치하는 문자를 찾아 삭제
-            if(`#${tagList[i]}` === tagText) {
+            if(`#${tagList[i].tag}` === tagText) {
+                console.log('일치')
                 tagList.splice(i, 1);
             }
         }
         setTagList([...tagList])
     }
     //사진 등록
+    const [picture, setPicture] = useState();
+    // let image = '';
+    function handleImageAdd(e) {
+        setPicture(e.target.files[0])
+        const image = e.target.files[0];
+        setImageFlag(true);
+        handleImagePreview(image);
+    }
+    function check() {
+        console.log(candidateList[candidateList.length-1].num)
+        console.log(selectImage)
+    }
+    //사진 미리보기
+    function handleImagePreview(image) {
+        if(image) {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            return new Promise((resolve) => {
+                reader.onload = () => {
+                    setImagePreview(reader.result);
+                    resolve();
+                }
+            })
+        }
+    }
+    //사진 삭제
+    function handleImageRemove() {
+        setImageFlag(false);
+        setImagePreview(defaultImage);
+    }
     //알람창
     function handleAlert() {
         //나타났다가 2초 뒤 쯤 사라지게 함
@@ -86,7 +120,6 @@ export default function VoteCandidate() {
         router.push('/VoteCreate/Information')
     }
     //등록 버튼
-    let num = 0;
     function handleRegister() {
         //후보 이름과 상세 정보는 필수이며 조건에 맞는지 확인
         if(name.length > 50 || detail.length > 1100) {
@@ -102,16 +135,23 @@ export default function VoteCandidate() {
             handleAlert();
         }
         else {
+            let number = 0;
+            if(candidateList.length === 0) number = 0;
+            else number = candidateList[candidateList.length-1].num;
+            
             setCandidateList(
                 prevList => [...prevList, {
-                    num: candidateList.length+1,
+                    num: number + 1,
                     name: name,
                     content: detail,
-                    picture: picture,
+                    picture: imageFlag,
                     tagList: tagList
                 }]
             )
-
+            if(imageFlag) {
+                //localStorage.setItem(name, imagePreview)
+                localStorage.setItem(name, picture)
+            }
             //투표 정보 입력 페이지로 이동
             router.push('/VoteCreate/Information')
         }
@@ -123,18 +163,29 @@ export default function VoteCandidate() {
                 {alert &&
                     <Alert type='negative' text={alertText}/>
                 }
+                <div onClick={check}>
+                    <p>확인</p>
+                </div>
                 <div>
                     <p className='register-title'>후보 등록</p>
                     <div className='candidate-info-flex'>
-                        <div className='candidate-image-wrap'>
-                            <FaRegImage size={100}/>
-                        </div>
+                        <label id='images' className='candidate-image-wrap' onChange={handleImageAdd}>
+                            <input id='images' type='file' style={{ display : "none" }}></input>
+                            <Image className='image'priority alt="후보자 사진" src={imagePreview} layout="responsive" width={95} height={95}></Image>
+
+                        </label>
                         <div className='name-wrap'>
                             <p className='name-title'>후보 이름</p>
                             <input onInput={handleNameChange} type="text" placeholder='후보 이름을 작성해주세요' />
                             <p className="name-error">후보 이름은 50글자 이내로 작성해주세요</p>
+                            
                         </div>
                     </div>
+                    {imageFlag &&
+                        <div className='image-remove-wrap' onClick={handleImageRemove}>
+                            <p>삭제</p>
+                        </div>
+                    }
                     <div className='tag-limit'>
                         <p>* 5개 제한</p>
                     </div>
