@@ -1,0 +1,46 @@
+.vote-create-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    .title-flex {
+        align-items: center;
+        display: flex;
+        margin: 30px;
+        .title-text {
+            font-size: 2vmax;
+        }
+        .question-wrap{
+            width: 1.7vmax;
+            height: 1.7vmax;
+            display: flex;
+            align-items: center;
+            border: 2px solid #4A83EF;
+            border-radius: 50px;
+            justify-content: center;
+            color: #4A83EF;
+            cursor: pointer;
+            font-size: 1vmax;
+            margin: 0 10px;
+        }
+    }
+    .vote-style {
+        p {
+            border: 2px solid #4A83EF;
+            border-radius: 5px;
+            color: #4A83EF;
+            width: 12vmax;
+            height: 4vmax;
+            font-size: 1.5vmax;
+            //정렬
+            text-align: center;
+            line-height: 4vmax;
+            margin: 30px auto;
+            &:hover, &.clicked {
+                background-color: #4A83EF;
+                color: white;
+                cursor: pointer;
+            }
+        }
+    }
+}

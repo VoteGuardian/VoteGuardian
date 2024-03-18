@@ -1,5 +1,11 @@
+import { recoilPersist } from "recoil-persist";
 const { atom } = require("recoil");
 //key : 전역적인 고유 키, default : 초기 값
+const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined
+const { persistAtom } = recoilPersist({
+    key: 'persist',
+    storage: sessionStorage
+})
 
 //생성한 투표 목록인지 참여 가능한 투표 목록인지 판단
 export const voteType = atom({
@@ -25,6 +31,29 @@ export const voteTotalPage = atom({
 export const votePage = atom({
     key: 'votePage',
     default: 1
+})
+//투표를 생성할 때 넣을 정보
+export const voteInfo = atom({
+    key: 'voteInfo',
+    default: {},
+    effects_UNSTABLE: [persistAtom]
+})
+//후보자 목록
+export const candidateListState = atom({
+    key: 'candidateListState',
+    default: [],
+    effects_UNSTABLE: [persistAtom]
+})
+//투표자 목록
+export const voterListState = atom({
+    key: 'voterListState',
+    default: [],
+    effects_UNSTABLE: [persistAtom]
+})
+//투표자 한 명 등록
+export const voterOneState = atom({
+    key: 'voterOneState',
+    default: false
 })
 
 //아래 두 개는 voteListState로 대체된 상태

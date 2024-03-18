@@ -1,0 +1,29 @@
+.next {
+    //width: 500px;
+    width: 25vmax;
+    height: 3vmax;
+    background-color: #4A83EF;
+    border-radius: 5px;
+    p {
+        color: white;
+        line-height: 3vmax;
+        text-align: center;
+        font-size: 1.2vmax;
+    }
+}
+.select {
+    width: 6vmax;
+    height: 2vmax;
+    border-radius: 5px;
+    p {
+        color: white;
+        line-height: 2vmax;
+        text-align: center;
+    }
+    &.negative {
+        background-color: #E7516D;
+    }
+    &.positive {
+        background-color: #4A83EF;
+    }
+}

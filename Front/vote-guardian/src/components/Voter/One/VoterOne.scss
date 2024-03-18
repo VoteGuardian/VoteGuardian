@@ -1,0 +1,21 @@
+//투표자 한 명 등록
+.voter-one-add-wrap {
+    position: absolute;
+    top: 10%;
+    left: 32%;
+    width: 30vmax;
+    height: 26vmax;
+    border: 2px solid #4A83EF;
+    label {
+        display: block;
+    }
+    //이메일, 이름 유효성 문구
+    .email-valid, .name-valid {
+        display: none;
+        color: #E7516D;
+        padding: 10px;
+        &.show {
+            display: block;
+        }
+    }
+}

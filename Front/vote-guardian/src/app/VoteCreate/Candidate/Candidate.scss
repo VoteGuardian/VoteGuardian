@@ -1,0 +1,12 @@
+* {
+    font-family: 'SUIT-Bold';
+    padding: 0;
+    margin: 0;
+}
+@font-face {
+    font-family: 'SUIT-Bold';
+    src: url('../../../assets/SUIT-Bold.otf');
+} 
+.vote-candidate-flex {
+    display: flex;
+}
