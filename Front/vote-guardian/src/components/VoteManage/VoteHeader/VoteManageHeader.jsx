@@ -52,7 +52,10 @@ export default function VoteManageHeader() {
             <PC>
                 <div className='pc-vote-header-wrap'>
                     <div className='vote-header-title'>
+                        {type === 'create' ? 
                         <p>투표 관리하기</p>
+                        :<p>투표 참여하기</p>
+                        }
                     </div>
                     <div className='vote-state-list-wrap'>
                         <ul className='vote-state-list'>

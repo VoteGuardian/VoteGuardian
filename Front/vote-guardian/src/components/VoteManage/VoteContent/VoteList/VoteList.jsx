@@ -1,4 +1,4 @@
-import VoteOne from "./VoteOne";
+import VoteOne from "../VoteOne/VoteOne";
 import './VoteList.scss';
 import { Mobile, PC, Tablet } from "@/hooks/useResize";
 

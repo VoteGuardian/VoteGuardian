@@ -1,0 +1,30 @@
+//예정, 진행, 종료
+.vote-one-top {
+    position: relative;
+    height: 25%;
+    .vote-type {
+        width: 3.5em;
+        height: 2.5em;
+        border-radius: 15%;
+        position: absolute;
+        bottom: 0;
+        left: 2em;
+        //어떤 상태냐에 따라 색 설정
+        &.before {
+            background-color: rgba( #A7B1E9, 0.5 );
+        }
+        &.progress {
+            background-color: rgba( #25C196, 0.5 );
+        }
+        &.done {
+            background-color: rgba( #FF917E, 0.5 );
+        }
+        //글씨
+        p {
+            margin: 0;
+            font-weight: bold;
+            line-height: 2.5em;
+            text-align: center;
+        }
+    }
+}
