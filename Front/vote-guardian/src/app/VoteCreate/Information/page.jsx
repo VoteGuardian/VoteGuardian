@@ -1,6 +1,6 @@
 'use client'
-import InfoContent from "@/components/VoteInformation/InfoContent";
-import VoteMenu from "@/components/VoteMenu/VoteMenu";
+import InfoContent from "@/components/VoteCreate/VoteInformation/InfoContent";
+import VoteMenu from "@/components/VoteCreate/VoteMenu/VoteMenu";
 import { RecoilRoot } from "recoil";
 import './Information.scss'
 

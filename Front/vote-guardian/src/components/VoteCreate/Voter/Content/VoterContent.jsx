@@ -1,6 +1,6 @@
 
 import './VoterContent.scss'
-import Alert from '../../Common/Alert/Alert';
+import Alert from '../../../Common/Alert/Alert';
 import VoterOne from '../One/VoterOne';
 import Button from '@/components/Common/Button/Button';
 import { useState } from 'react';

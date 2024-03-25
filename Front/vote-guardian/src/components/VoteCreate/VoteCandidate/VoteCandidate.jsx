@@ -4,9 +4,9 @@ import { ImCross } from "react-icons/im";
 import { useRecoilState } from 'recoil';
 import { candidateListState } from '@/recoil/atoms/voteAtoms';
 import Image from 'next/image'
-import defaultImage from '../../../public/default.jpg'
-import Button from '../Common/Button/Button';
-import Alert from '../Common/Alert/Alert';
+import defaultImage from '../../../../public/default.jpg'
+import Button from '../../Common/Button/Button'
+import Alert from '../../Common/Alert/Alert';
 import './VoteCandidate.scss'
 
 export default function VoteCandidate() {
@@ -84,10 +84,6 @@ export default function VoteCandidate() {
         setImageFlag(true);
         handleImagePreview(image);
     }
-    function check() {
-        console.log(candidateList[candidateList.length-1].num)
-        console.log(selectImage)
-    }
     //사진 미리보기
     function handleImagePreview(image) {
         if(image) {
@@ -163,9 +159,6 @@ export default function VoteCandidate() {
                 {alert &&
                     <Alert type='negative' text={alertText}/>
                 }
-                <div onClick={check}>
-                    <p>확인</p>
-                </div>
                 <div>
                     <p className='register-title'>후보 등록</p>
                     <div className='candidate-info-flex'>

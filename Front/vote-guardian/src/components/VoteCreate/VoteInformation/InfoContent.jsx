@@ -4,8 +4,8 @@ import { useRecoilState } from "recoil"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import './InfoContent.scss'
-import Button from "../Common/Button/Button";
-import Alert from "../Common/Alert/Alert";
+import Button from "../../Common/Button/Button";
+import Alert from "../../Common/Alert/Alert";
 
 
 export default function InfoContent() {
